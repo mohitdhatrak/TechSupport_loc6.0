@@ -1,11 +1,19 @@
+.app-container {
+  /* background-image: url('../../../../public/assets/images/landing-image.jpg'); */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  padding: 20px;
+}
+
 .animated {
   text-indent: 8px;
-  color: red;
+  color: #1877f2;
 }
 
 .animated:before {
   content: 'iPhone 15 phone ...';
-  animation: topToBottom 6s infinite 0s;
+  animation: topToBottom 5s infinite 0s;
 }
 
 @keyframes topToBottom {
@@ -13,10 +21,10 @@
     content: 'iPhone 15 phone ...';
   }
   25% {
-    content: 'Nike Air Force 1 sneaker ...';
+    content: 'Nike AirForce sneaker ...';
   }
   50% {
-    content: 'Canon camera ...';
+    content: 'Canon EOS camera ...';
   }
   75% {
     content: 'Sony Bravia TV ...';
@@ -29,7 +37,7 @@
 .desc1 {
   margin-bottom: 2rem;
   margin: 0 auto;
-  width: 25rem;
+  width: 35rem;
   max-width: 90vw;
   display: flex;
   align-items: center;
@@ -37,12 +45,12 @@
 }
 
 .desc2 {
-  margin-bottom: 2rem;
   margin: 2rem auto;
-  width: 25rem;
+  width: 30rem;
   max-width: 90vw;
   display: flex;
   align-items: center;
   font-size: 1.2rem;
   text-align: center;
 }
+

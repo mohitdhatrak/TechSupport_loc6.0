@@ -21,8 +21,9 @@ export default function Main({ children, sx, ...other }) {
         flexDirection: 'column',
         py: `${HEADER.H_MOBILE + SPACING}px`,
         ...(lgUp && {
-          px: 2,
+          // px: 2,
           py: `${HEADER.H_DESKTOP + SPACING}px`,
+          pb: 0,
           width: `calc(100% - ${NAV.WIDTH}px)`,
         }),
         ...sx,
