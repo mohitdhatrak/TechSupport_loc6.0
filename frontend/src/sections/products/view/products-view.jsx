@@ -10,8 +10,6 @@ import { products } from 'src/_mock/products';
 import ProductCard from '../product-card';
 import ProductSort from '../product-sort';
 import ProductFilters from '../product-filters';
-import ProductCartWidget from '../product-cart-widget';
-// import ProdComp from '../../blog/view/prodComp';
 
 export default function ProductsView() {
   const [openFilter, setOpenFilter] = useState(false);
@@ -27,7 +25,7 @@ export default function ProductsView() {
   return (
     <Container>
       <Typography variant="h4" sx={{ mb: 5 }}>
-        Products
+        Search Results
       </Typography>
 
       <Stack
@@ -55,8 +53,6 @@ export default function ProductsView() {
           </Grid>
         ))}
       </Grid>
-
-      <ProductCartWidget />
     </Container>
   );
 }
