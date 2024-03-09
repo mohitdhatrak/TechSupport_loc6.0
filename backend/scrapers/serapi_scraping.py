@@ -9,6 +9,7 @@ flipkart_pattern = re.compile(r"/p/\w+")
 ebay_pattern = re.compile(r"/itm/\d+")
 indiamart_pattern = re.compile(r"/proddetail/")
 
+#main function
 def extract_search_results(query, platform):
     params = {
         "q": f"Buy {query} at best price {platform}",
