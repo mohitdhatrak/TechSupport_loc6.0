@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import pprint
 from serpapi import GoogleSearch
 import re
+from generic_reviews import generic_reviews
+import random
 
 # Regular expressions for filtering links
 flipkart_pattern = re.compile(r"/p/\w+")
@@ -70,6 +72,8 @@ def ebay_scraper(url):
     reviews_count = len(reviews_container.find_all(text="Verified purchase")) if reviews_container else 0
     
     description = "lorem ipsum"
+    
+    user_reviews = random.sample(generic_reviews, 4) 
 
     result = {
         'source': 'ebay',
@@ -78,6 +82,7 @@ def ebay_scraper(url):
         'reviews_count': reviews_count,
         'description': description,
         'image_url': image_url,
+        'user_reviews': user_reviews
     }
 
     return result
@@ -109,13 +114,16 @@ def flipkart_scraper(url):
     highlights_div = soup.find('div', class_='_2cM9lP')
     highlights_list = [li.text.strip() for li in highlights_div.find_all('li')] if highlights_div else []
     
+    user_reviews = random.sample(generic_reviews, 4)
+    
     result = {
         'source': 'Flipkart',
         'title': title,
         'price': price,
         'reviews_count': reviews, 
         'description': highlights_list,
-        'image_url': image_src
+        'image_url': image_src,
+        'user_reviews': user_reviews
     }
 
     return result
@@ -154,6 +162,8 @@ def indiamart_scraper(url):
     image_src = img_tag['src'] if img_tag else ""
     
     reviews_count = "1851"
+    
+    user_reviews = random.sample(generic_reviews, 4)
 
     result = {
         'source' : 'indiamart',
@@ -161,7 +171,8 @@ def indiamart_scraper(url):
         'price': price,
         'reviews_count': reviews_count,
         'description': table_data,
-        'image_src': image_src
+        'image_src': image_src,
+        'user_reviews': user_reviews
     }
 
     return result
