@@ -163,15 +163,15 @@ export default function ProductFilters({ openFilter, onOpenFilter, onCloseFilter
 
         <Scrollbar>
           <Stack spacing={3} sx={{ p: 3 }}>
+            {renderPrice}
+
+            {renderRating}
+
             {renderGender}
 
             {renderCategory}
 
             {renderColors}
-
-            {renderPrice}
-
-            {renderRating}
           </Stack>
         </Scrollbar>
 
