@@ -277,7 +277,7 @@ def indiamart_scraper(url):
     return result
 
 # Main code execution
-# queries = ["Iphone 15"]
+queries = ["Iphone 15"]
 platforms = ["flipkart", "ebay", "indiamart"]
 
 # Dictionary to store scraped data for each platform
@@ -404,9 +404,8 @@ async def upload_profile_photo(user_id: str, file: UploadFile = File(...)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 # Todo endpoints
 @router.get("/")
-async def get_todos():
-    todos = list_serial(collection_name.find())
-    return todos
+async def greeting():
+   return {'message':'hello world'}
 
 @router.post("/")
 async def post_todo(todo:Todo):
