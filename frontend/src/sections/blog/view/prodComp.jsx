@@ -32,6 +32,39 @@ const cardsData = [
     data: ['10TB Storage', '500 E-mails', '20 Accounts'],
   },
 ];
+// const cardsData = [];
+const cardsData1 = [
+  {
+    id: 1,
+    type: 'free',
+    title: 'Free Plan',
+    description: 'Lorem ipsum',
+    price: 19.99,
+    recurrency: 14.99,
+    mostPopular: false,
+    data: ['2TB Storage', '100 E-mails'],
+  },
+  {
+    id: 2,
+    type: 'basic',
+    title: 'Basic Plan',
+    description: 'Lorem ipsum',
+    price: 29.99,
+    recurrency: 24.99,
+    mostPopular: false,
+    data: ['2TB Storage', '200 E-mails', '10 Accounts'],
+  },
+  {
+    id: 3,
+    type: 'medium',
+    title: 'Medium Plan',
+    description: 'Lorem ipsum',
+    price: 69.99,
+    recurrency: 59.99,
+    mostPopular: false,
+    data: ['10TB Storage', '500 E-mails', '20 Accounts'],
+  },
+];
 // ---------------------------------
 function CardDescription({ title, description }) {
   return (
@@ -97,11 +130,54 @@ export default function ProdComp() {
 
   return (
     <>
-      <div className="prod-wrapper">
-        {cardsData.map((props) => {
-          return <PricingCard data={props} key={props.id} clickMe={handleClick} />;
-        })}
-      </div>
+      {cardsData.length > 0 ? (
+        <div className="prod-wrapper">
+          {cardsData?.map((props) => {
+            return <PricingCard data={props} key={props.id} clickMe={handleClick} />;
+          })}
+        </div>
+      ) : (
+        <></>
+      )}
+      {cardsData.length > 0 ? (
+        <></>
+      ) : (
+        <>
+          <div className="skeleton-prod-wrapper">
+            {cardsData1.map((props) => {
+              return (
+                <div className="cardS pricing-card" key={props.id} id="outerCard">
+                  <div className="skeleton-card">
+                    <div className="skeleton-description">
+                      <h2>&nbsp;</h2>
+                      <p>&nbsp;</p>
+                    </div>
+                    <div className="skeleton-billing">
+                      <p>
+                        <strong className="price">&nbsp;</strong>
+                        <strong id="NA"> Not available</strong>
+                      </p>
+                      <p>
+                        <span className="recurrency">&nbsp;</span>
+                      </p>
+                    </div>
+                    <div className="skeleton-features">
+                      <ul>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                      </ul>
+                    </div>
+                    <div className="skeleton-action">
+                      <button disabled>B U Y</button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
 
       {/* <BarChart
         xAxis={[{ scaleType: 'band', data: ['group A', 'group B', 'group C'] }]}

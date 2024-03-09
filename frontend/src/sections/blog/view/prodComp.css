@@ -106,3 +106,131 @@
 .card-features ul li {
   margin-bottom: .5rem;
 }
+/* --------------------------skeleton----------------------------- */
+/* Skeleton card styling */
+/* Skeleton card styling */
+.skeleton-card {
+  background-color: #f7f7f7; /* Light gray background */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  margin-bottom: 1rem;
+  max-width: 300px;
+  padding: 1rem;
+  width: 100%;
+  text-align: center;
+}
+
+.skeleton-description h2 {
+  font-size: 22px;
+  margin-bottom: .5rem;
+  background: linear-gradient(to right, #f7f7f7 0%, #e8e8e8 50%, #f7f7f7 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.skeleton-description p {
+  margin-bottom: 1rem;
+  background: linear-gradient(to right, #f7f7f7 0%, #e8e8e8 50%, #f7f7f7 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.skeleton-billing {
+  background-color: #f0f0f0;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+.skeleton-billing p {
+  margin-bottom: .5rem;
+  background: linear-gradient(to right, #f7f7f7 0%, #e8e8e8 50%, #f7f7f7 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.skeleton-features {
+  min-height: 150px;
+  margin-bottom: 1rem;
+}
+
+.skeleton-features ul {
+  list-style: none;
+  padding: 0;
+}
+
+.skeleton-features ul li {
+  margin-bottom: .5rem;
+  background: linear-gradient(to right, #f7f7f7 0%, #e8e8e8 50%, #f7f7f7 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.skeleton-action {
+  margin-top: 1rem;
+}
+
+.skeleton-action > button {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  color: #ddd;
+  cursor: default;
+  font-size: 16px;
+  font-weight: 600;
+  padding: .5rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+/* Animation for shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+#NA{
+  margin-bottom: .5rem;
+  /* background: linear-gradient(to right, #f7f7f7 0%, #e8e8e8 50%, #f7f7f7 100%); */
+  background-size: 200% 100%;
+  /* animation: shimmer 1.5s infinite linear; */
+  color: #a69696;
+}
+
+.skeleton-prod-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  height: 100vh;
+  color: #9b59b6;
+  /* background-color: #1abc9c; */
+  /* padding: 2rem; */
+  overflow: auto;
+}
+#outerCard{
+  background-color:#f1c40f;
+  padding: 0;
+  margin: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  min-width: 300px;
+}
+
+.cardS {
+  /* border: 1px solid #ddd; */
+  border-radius: 8px;
+  /* box-shadow: 1px 1px 10px 1px #ddd; */
+  margin-bottom: 1rem;
+  max-width: 300px;
+  /* padding: 1rem 0; */
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+
