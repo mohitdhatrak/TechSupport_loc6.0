@@ -1,0 +1,48 @@
+.animated {
+  text-indent: 8px;
+  color: red;
+}
+
+.animated:before {
+  content: 'iPhone 15 phone ...';
+  animation: topToBottom 6s infinite 0s;
+}
+
+@keyframes topToBottom {
+  0% {
+    content: 'iPhone 15 phone ...';
+  }
+  25% {
+    content: 'Nike Air Force 1 sneaker ...';
+  }
+  50% {
+    content: 'Canon camera ...';
+  }
+  75% {
+    content: 'Sony Bravia TV ...';
+  }
+  100% {
+    content: 'Bose headphones ...';
+  }
+}
+
+.desc1 {
+  margin-bottom: 2rem;
+  margin: 0 auto;
+  width: 25rem;
+  max-width: 90vw;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.desc2 {
+  margin-bottom: 2rem;
+  margin: 2rem auto;
+  width: 25rem;
+  max-width: 90vw;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  text-align: center;
+}
