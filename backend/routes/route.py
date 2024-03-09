@@ -311,14 +311,28 @@ def indiamart_scraper(url):
     reviews_count = "1851"
 
     # Randomly select 4 user reviews
-    user_reviews = random.sample(generic_reviews, 4)
-    
-    category_div = soup.find_all('a', class_="color5")
-    j = []
-    for i in category_div:
-        j.append(i.text)
+    category_element = soup.find('div', class_="fs12 pb10 mt10 vcrmb")
+
+    # Check if category_element is not None
+    if category_element:
+        category = category_element.text
+    else:
+        category = ''
+
+    # If category is not an empty string, proceed with extracting the desired content
+    if category:
+        first_index = category.find('>')
         
-    category = j[1]
+        # Find the index of the next '>' character after the first one
+        second_index = category.find('>', first_index + 1)
+        
+        # Extract the desired content if the indices are valid
+        if first_index != -1 and second_index != -1:
+            desired_content = category[first_index + 2:second_index].strip()
+        else:
+            print("Desired content cannot be extracted due to invalid indices.")
+    else:
+        print("Category is empty.")
     
 
     result = {
@@ -330,7 +344,7 @@ def indiamart_scraper(url):
         'image_url': image_src,
         'user_reviews': user_reviews,
         'url': url,  # Include the URL here
-        'category': category
+        'category': desired_content
     }
 
     return result
