@@ -177,42 +177,44 @@ def ebay_scraper(url):
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, 'html.parser')
 
-    # Get title
-    title_tag = soup.find('h1', class_="x-item-title__mainTitle")
-    title = title_tag.text.strip() if title_tag else ""
+    title = soup.find('h1', class_="x-item-title__mainTitle").text.strip()
+    price = soup.find('div', class_="x-price-primary").text.strip()
+    info = soup.find('div', class_="ux-layout-section__item").text.strip()
 
-    # Get price
-    price_tag = soup.find('div', class_="x-price-primary")
-    price = price_tag.text.strip() if price_tag else ""
-
-    # Get image URL
     div_tag = soup.find('div', class_='ux-image-carousel-item')
-    image_url = div_tag.find('img')['src'] if div_tag and div_tag.find('img') else ""
+    image_url = ""
+    if div_tag:
+        img_tag = div_tag.find('img')
+        if img_tag:
+            image_url = img_tag['src']
+        else:
+            print("No image found within the specified div tag")
+    else:
+        print("No div tag found with the specified class")
 
-    # Get reviews count
     reviews_container = soup.find('div', class_="d-stores-info-categories__details-container__tabbed-list")
-    reviews_count = len(reviews_container.find_all(text="Verified purchase")) if reviews_container else 0
-    
-    # Get description
-    description = "lorem ipsum"
 
-    # Randomly select 4 user reviews
-    user_reviews = random.sample(generic_reviews, 4) 
+    reviews_count = 0
+    if reviews_container:
+        raw_reviews = reviews_container.text.strip()
+        reviews = raw_reviews.split("Verified purchase")[1:]
+        reviews_count = len(reviews)
+    
+    # Scraping product category
+    category = soup.find('a', class_="seo-breadcrumb-text")
+    product_category = category.text.strip() if category else "Category not found"
 
     result = {
-        'source': 'ebay',
+        'source' : 'ebay',
         'title': title,
         'price': price,
-        'reviews_count': reviews_count,
-        'description': description,
         'image_url': image_url,
-        'user_reviews': user_reviews,
-        'url': url  # Include the URL here
+        'reviews_count': reviews_count,
+        'product_category': product_category
     }
 
-    return result 
+    return result
 
-# Function to scrape Flipkart data
 def flipkart_scraper(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
@@ -225,45 +227,47 @@ def flipkart_scraper(url):
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, 'html.parser')
     
+    data = {'source': 'Flipkart'}
 
-    # Get title
-    title_tag = soup.find('h1', class_="yhB1nd")
-    title = title_tag.text.strip() if title_tag else ""
+    title = soup.find('h1', class_="yhB1nd").text
+    data['title'] = title
 
-    # Get image URL
-    img_tags = soup.find_all('img', src=lambda src: src and src.startswith('https'))
-    if img_tags:
-        image_src = img_tags[0].get('src') # Get the src attribute of the first img tag
+    img_tag = soup.find('img', class_='_396cs4 _2amPTt _3qGmMb')
+    image_src = img_tag['src']
+    data['image'] = image_src
 
-    # Get reviews count
-    value_tag = soup.find('span', class_="_2_R_DZ")
-    value_text = value_tag.text.strip() if value_tag else ""
-    split = value_text.split("&")
-    reviews = split[1].split()[0] if len(split) > 1 else "0"
+    value = soup.find('span', class_="_2_R_DZ").text.strip()
+    split = value.split("&")
+    ratings = split[0].split()[0]
+    reviews = split[1].split()[0]
+    # data['ratings'] = ratings
+    data['reviews'] = reviews
 
-    # Get price
-    price_tag = soup.find('div', class_="_30jeq3 _16Jk6d")
-    price = price_tag.text.strip() if price_tag else ""
+    stars = soup.find('div', class_="_3LWZlK").text
+    # data['stars'] = stars
 
-    # Get highlights list
+    price = soup.find('div', class_="_30jeq3 _16Jk6d").text
+    data['price'] = price
+
     highlights_div = soup.find('div', class_='_2cM9lP')
-    highlights_list = [li.text.strip() for li in highlights_div.find_all('li')] if highlights_div else []
-
-    # Randomly select 4 user reviews
-    user_reviews = random.sample(generic_reviews, 4)
+    if highlights_div:
+        highlights_title_div = highlights_div.find('div', class_='_3a9CI2')
+        highlights_ul = highlights_div.find('ul')
+        highlights_title = highlights_title_div.text.strip() if highlights_title_div else None
+        highlights_list = [li.text.strip() for li in highlights_ul.find_all('li')] if highlights_ul else []
+        data['description'] = highlights_list
     
-    result = {
-        'source': 'Flipkart',
-        'title': title,
-        'price': price,
-        'reviews_count': reviews, 
-        'description': highlights_list,
-        'image_url': image_src,
-        'user_reviews': user_reviews,
-        'url': url  # Include the URL here
-    }
+    # Extracting product category
+    category_div = soup.find_all('a', class_="_2whKao")
+    j = []
+    for i in category_div:
+        j.append(i.text)
+        
+    category = j[1]
+    
+    data['product_category'] = category
 
-    return result
+    return data
 
 # Function to scrape Indiamart data
 def indiamart_scraper(url):
@@ -308,6 +312,15 @@ def indiamart_scraper(url):
 
     # Randomly select 4 user reviews
     user_reviews = random.sample(generic_reviews, 4)
+    
+    category =  soup.find('div', class_="fs12 pb10 mt10 vcrmb").text
+    first_index = category.find('>')
+
+    # Find the index of the next '>' character after the first one
+    second_index = category.find('>', first_index + 1)
+
+    # Extract the desired content
+    desired_content = category[first_index + 2:second_index].strip()
 
     result = {
         'source': 'indiamart',
@@ -317,7 +330,8 @@ def indiamart_scraper(url):
         'description': table_data,
         'image_url': image_src,
         'user_reviews': user_reviews,
-        'url': url  # Include the URL here
+        'url': url,  # Include the URL here
+        'category': desired_content
     }
 
     return result

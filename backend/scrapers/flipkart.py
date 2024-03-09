@@ -19,20 +19,19 @@ def flipkart_scraper(url):
     title = soup.find('h1', class_="yhB1nd").text
     data['title'] = title
 
-    # Find all img tags and filter based on src attribute starting with "https"
-    img_tags = soup.find_all('img', src=lambda src: src and src.startswith('https'))
-    if img_tags:
-        image_src = img_tags[0].get('src') # Get the src attribute of the first img tag
-        data['image'] = image_src
+    img_tag = soup.find('img', class_='_396cs4 _2amPTt _3qGmMb')
+    image_src = img_tag['src']
+    data['image'] = image_src
 
     value = soup.find('span', class_="_2_R_DZ").text.strip()
     split = value.split("&")
     ratings = split[0].split()[0]
     reviews = split[1].split()[0]
+    # data['ratings'] = ratings
     data['reviews'] = reviews
 
     stars = soup.find('div', class_="_3LWZlK").text
-    data['stars'] = stars
+    # data['stars'] = stars
 
     price = soup.find('div', class_="_30jeq3 _16Jk6d").text
     data['price'] = price
@@ -44,9 +43,19 @@ def flipkart_scraper(url):
         highlights_title = highlights_title_div.text.strip() if highlights_title_div else None
         highlights_list = [li.text.strip() for li in highlights_ul.find_all('li')] if highlights_ul else []
         data['description'] = highlights_list
+    
+    # Extracting product category
+    category_div = soup.find_all('a', class_="_2whKao")
+    j = []
+    for i in category_div:
+        j.append(i.text)
+        
+    category = j[1]
+    
+    data['product_category'] = category
 
     return data
 
-url = "https://www.flipkart.com/nike-air-max-command-men-s-shoes-running-men/p/itm43805916166ed?pid=SHOGRSTUCNHDZHGZ&lid=LSTSHOGRSTUCNHDZHGZ8ZNQDT&marketplace=FLIPKART&store=osp%2Fcil"
+url = "https://www.flipkart.com/samsung-galaxy-f15-5g-groovy-violet-128-gb/p/itm3e7d6c7112d45?pid=MOBGYBAVW8HTJH4X&lid=LSTMOBGYBAVW8HTJH4X9VTKYN&marketplace=FLIPKART&q=samsung+galazy&store=search.flipkart.com&srno=s_1_1&otracker=search&otracker1=search&fm=Search&iid=7f49d0fb-cd4b-4d9f-890c-842a4fb14fb9.MOBGYBAVW8HTJH4X.SEARCH&ppt=sp&ppn=sp&ssid=4v476gzp6o0000001709913269065&qH=5068949f63f423e0"
 product_data = flipkart_scraper(url)
 pprint.pprint(product_data)
