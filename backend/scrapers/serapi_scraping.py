@@ -2,8 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import re
-import random
-from generic_reviews import generic_reviews
 import pprint
 from serpapi import GoogleSearch
 
@@ -16,7 +14,7 @@ indiamart_pattern = re.compile(r"/proddetail/")
 def extract_search_results(query, platform):
     params = {
         "q": f"Buy {query} at best price {platform}",
-        "api_key": "2145d6d7b13649473c8fc27db3144a1fcd104d599cb85342faefc7e612e243ca"  # Replace this with your actual SerpApi API key
+        "api_key": " 80f40b48b2e799f40e5bfe9ebbb9f2e0dc267db2da8abb7b2f564fa25148067c"  # Replace this with your actual SerpApi API key
     }
 
     search = GoogleSearch(params)
@@ -75,9 +73,6 @@ def ebay_scraper(url):
     reviews_count = len(reviews_container.find_all(text="Verified purchase")) if reviews_container else 0
     
     description = "lorem ipsum"
-    
-    # Randomly select 4 user reviews
-    user_reviews = random.sample(generic_reviews, 4) 
 
     result = {
         'source': 'ebay',
@@ -86,7 +81,6 @@ def ebay_scraper(url):
         'reviews_count': reviews_count,
         'description': description,
         'image_url': image_url,
-        'user_reviews': user_reviews
     }
 
     return result
@@ -119,17 +113,13 @@ def flipkart_scraper(url):
     highlights_div = soup.find('div', class_='_2cM9lP')
     highlights_list = [li.text.strip() for li in highlights_div.find_all('li')] if highlights_div else []
     
-    # Randomly select 4 user reviews
-    user_reviews = random.sample(generic_reviews, 4)
-    
     result = {
         'source': 'Flipkart',
         'title': title,
         'price': price,
         'reviews_count': reviews, 
         'description': highlights_list,
-        'image_url': image_src,
-        'user_reviews': user_reviews
+        'image_url': image_src
     }
 
     return result
@@ -169,9 +159,6 @@ def indiamart_scraper(url):
     image_src = img_tag['src'] if img_tag else ""
     
     reviews_count = "1851"
-    
-    # Randomly select 4 user reviews
-    user_reviews = random.sample(generic_reviews, 4)
 
     result = {
         'source' : 'indiamart',
@@ -179,14 +166,13 @@ def indiamart_scraper(url):
         'price': price,
         'reviews_count': reviews_count,
         'description': table_data,
-        'image_src': image_src,
-        'user_reviews': user_reviews
+        'image_url': image_src
     }
 
     return result
 
 # Main code execution
-queries = ["Iphone 15"]
+queries = ["Samsung galaxy s23 ultra"]
 platforms = ["flipkart", "ebay", "indiamart"]
 
 # Dictionary to store scraped data for each platform
