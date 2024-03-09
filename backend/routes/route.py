@@ -8,7 +8,11 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from models.todos import Todo
 from models.user import UpdateUser, User
 from schema.schemas import list_serial
-# from transformers import pipeline
+from transformers import pipeline
+import nltk  # Add this import statement
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+nltk.download('vader_lexicon')  # Move this line here
+from typing import List, Dict
 
 UPLOAD_DIR = "profile_photos"
 import json
@@ -79,6 +83,7 @@ generic_reviews = [
     {'name': 'Caleb Hill', 'stars': 3, 'review': 'This product is average at best. It works fine, but it lacks some of the features that I was hoping for. Overall, it\'s not bad, but it\'s nothing exceptional.'}
 ]
 
+
 # Regular expressions for filtering links
 flipkart_pattern = re.compile(r"/p/\w+")
 ebay_pattern = re.compile(r"/itm/\d+")
@@ -124,6 +129,40 @@ def filter_links(links, platform):
     elif platform == "indiamart":
         return [link for link in links if indiamart_pattern.search(link)]
 
+def calculate_average_sentiment(products: List[Dict]):
+    total_reviews = 0
+    total_sentiment = 0
+
+    for product in products:
+        for review in product['user_reviews']:
+            total_reviews += 1
+            total_sentiment += review['stars']
+    
+    if total_reviews == 0:
+        return 0  # Avoid division by zero
+    else:
+        return round(total_sentiment / total_reviews, 2)
+
+def analyze_user_reviews(products: List[Dict]):
+    reviews_analysis = []
+
+    for product in products:
+        product_analysis = {
+            "title": product["title"],
+            "average_sentiment": calculate_average_sentiment([product]),
+            "positive_reviews": [],
+            "negative_reviews": []
+        }
+
+        for review in product['user_reviews']:
+            if review['stars'] >= 4:
+                product_analysis['positive_reviews'].append(review)
+            else:
+                product_analysis['negative_reviews'].append(review)
+        
+        reviews_analysis.append(product_analysis)
+    
+    return reviews_analysis
 # Function to scrape eBay data
 # Function to scrape eBay data
 def ebay_scraper(url):
@@ -398,6 +437,20 @@ def get_current_user(user: User = Depends(authenticate_user)):
     # Return response
     return {"sentiment": sentiment}
 
+@router.post("/average_sentiment")
+async def average_sentiment(product_data: Dict):
+    sentiment_scores = {}
+
+    if product_data.get('flipkart'):
+        sentiment_scores['flipkart'] = calculate_average_sentiment(product_data['flipkart'])
+    
+    if product_data.get('ebay'):
+        sentiment_scores['ebay'] = calculate_average_sentiment(product_data['ebay'])
+    
+    if product_data.get('indiamart'):
+        sentiment_scores['indiamart'] = calculate_average_sentiment(product_data['indiamart'])
+    
+    return sentiment_scores
 # Signup route
 @router.post("/signup", status_code=status.HTTP_201_CREATED)
 async def signup(user: User):
