@@ -14,7 +14,7 @@ indiamart_pattern = re.compile(r"/proddetail/")
 def extract_search_results(query, platform):
     params = {
         "q": f"Buy {query} at best price {platform}",
-        "api_key": " 80f40b48b2e799f40e5bfe9ebbb9f2e0dc267db2da8abb7b2f564fa25148067c"  # Replace this with your actual SerpApi API key
+        "api_key": "2145d6d7b13649473c8fc27db3144a1fcd104d599cb85342faefc7e612e243ca"  # Replace this with your actual SerpApi API key
     }
 
     search = GoogleSearch(params)
@@ -172,7 +172,7 @@ def indiamart_scraper(url):
     return result
 
 # Main code execution
-queries = ["Samsung galaxy s23 ultra"]
+queries = ["Iphone 15"]
 platforms = ["flipkart", "ebay", "indiamart"]
 
 # Dictionary to store scraped data for each platform
