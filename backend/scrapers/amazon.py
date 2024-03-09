@@ -19,8 +19,8 @@ def returnAmazon():
     product_title = product_title_element.text.strip()
     
     # Find the price element
-    price_element = driver.find_element(By.XPATH, '//span[@class="a-offscreen"]')
-    price_text = price_element.text.strip()
+    price_element = driver.find_element(By.XPATH, '//*[@id="corePriceDisplay_desktop_feature_div"]/div[1]/span[3]/span[2]/span[2]')
+    price_text = price_element.text    
     
     # Find the highlights element
     highlights_element = driver.find_element(By.XPATH, '//ul[@class="a-unordered-list a-vertical a-spacing-mini"]')
