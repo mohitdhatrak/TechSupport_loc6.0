@@ -68,13 +68,16 @@ def ebay_scraper(url):
 
     reviews_container = soup.find('div', class_="d-stores-info-categories__details-container__tabbed-list")
     reviews_count = len(reviews_container.find_all(text="Verified purchase")) if reviews_container else 0
+    
+    description = "lorem ipsum"
 
     result = {
         'source': 'ebay',
         'title': title,
         'price': price,
+        'reviews_count': reviews_count,
+        'description': description,
         'image_url': image_url,
-        'reviews_count': reviews_count
     }
 
     return result
@@ -91,10 +94,8 @@ def flipkart_scraper(url):
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, 'html.parser')
     
-    data = {'source': 'Flipkart'}
 
     title = soup.find('h1', class_="yhB1nd").text.strip()
-    data['title'] = title
 
     img_tag = soup.find('img', class_='_396cs4 _2amPTt _3qGmMb')
     image_src = img_tag['src'] if img_tag else ""
@@ -107,15 +108,17 @@ def flipkart_scraper(url):
 
     highlights_div = soup.find('div', class_='_2cM9lP')
     highlights_list = [li.text.strip() for li in highlights_div.find_all('li')] if highlights_div else []
-
-    data.update({
-        'image': image_src,
-        'reviews': reviews,
+    
+    result = {
+        'source': 'Flipkart',
+        'title': title,
         'price': price,
-        'description': highlights_list
-    })
+        'reviews_count': reviews, 
+        'description': highlights_list,
+        'image_url': image_src
+    }
 
-    return data
+    return result
 
 def indiamart_scraper(url):
     headers = {
@@ -149,11 +152,14 @@ def indiamart_scraper(url):
 
     img_tag = soup.find('img', class_='img-drift-demo-trigger')
     image_src = img_tag['src'] if img_tag else ""
+    
+    reviews_count = "1851"
 
     result = {
         'source' : 'indiamart',
         'title': title,
         'price': price,
+        'reviews_count': reviews_count,
         'description': table_data,
         'image_src': image_src
     }
