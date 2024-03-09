@@ -87,12 +87,13 @@ indiamart_pattern = re.compile(r"/proddetail/")
 def extract_search_results(query, platform):
     params = {
         "q": f"Buy {query} at best price {platform}",
-        "api_key": "80f40b48b2e799f40e5bfe9ebbb9f2e0dc267db2da8abb7b2f564fa25148067c"  # Replace this with your actual SerpApi API key
+        "api_key": "819ebc51c95c1dc44901f05a67fa207474390ff1eb8ae19ca71744c1bf876c8c"  # Replace this with your actual SerpApi API key
     }
 
     search = GoogleSearch(params)
     results = search.get_dict()
-
+    print(params)
+    print(results)
     # Extracting organic search results
     organic_results = results.get("organic_results", [])
 
@@ -190,8 +191,9 @@ def flipkart_scraper(url):
     title = title_tag.text.strip() if title_tag else ""
 
     # Get image URL
-    img_tag = soup.find('img', class_='_396cs4 _2amPTt _3qGmMb')
-    image_src = img_tag['src'] if img_tag else ""
+    img_tags = soup.find_all('img', src=lambda src: src and src.startswith('https'))
+    if img_tags:
+        image_src = img_tags[0].get('src') # Get the src attribute of the first img tag
 
     # Get reviews count
     value_tag = soup.find('span', class_="_2_R_DZ")
@@ -482,7 +484,6 @@ async def get_product_data(title: str):
     # Perform search and scrape data for the given title
     scraped_data_dict = {"flipkart": [], "ebay": [], "indiamart": []}
     platforms = ["flipkart", "ebay", "indiamart"]
-    print(title)
     for platform in platforms:
         flipkart_links, ebay_links, indiamart_links = extract_search_results(title, platform)
         if platform == "flipkart":
