@@ -1,203 +1,210 @@
 from datetime import datetime
-# Define Flipkart sale data
+
 flipkart_sales = {
     'Big Saving Days': {
-        'Expected Date': 'March 11th to March 15th',
+        'Expected Date': (datetime(2024, 3, 11), datetime(2024, 3, 15)),
         'Sale Theme': 'Best offers and discounts on mobile, electronics, TVs, appliances, home furnishing, etc.'
     },
     'Appliances Bonanza': {
-        'Expected Date': 'March 16th to March 21st',
+        'Expected Date': (datetime(2024, 3, 16), datetime(2024, 3, 21)),
         'Sale Theme': 'Offers and discounts on home appliances.'
     },
     'Summer Sale': {
-        'Expected Date': 'March 22nd to March 26th',
+        'Expected Date': (datetime(2024, 3, 22), datetime(2024, 3, 26)),
         'Sale Theme': 'Offers and deals on ACs, coolers, fans and more.'
     },
     'Big Bachat Dhamaal Sale': {
-        'Expected Date': 'April 1st to April 3rd',
+        'Expected Date': (datetime(2024, 4, 1), datetime(2024, 4, 3)),
         'Sale Theme': 'Offers on electronics, discounts on smartphones, TVs, laptops, and more. Deals on fashion, home appliances, home furnishing, home decor and more.'
     },
     'Summer Saver Days': {
-        'Expected Date': 'April 13th to April 17th',
+        'Expected Date': (datetime(2024, 4, 13), datetime(2024, 4, 17)),
         'Sale Theme': 'Offers and discounts on ACs, coolers, fans and more.'
     },
     'Electronics Sale': {
-        'Expected Date': 'May 23rd to May 31st',
+        'Expected Date': (datetime(2024, 5, 23), datetime(2024, 5, 31)),
         'Sale Theme': 'Best offers on electronics, TVs, laptops, smartphones and more.'
     },
     'End-of-Season Sale': {
-        'Expected Date': 'June 1st to June 6th',
+        'Expected Date': (datetime(2024, 6, 1), datetime(2024, 6, 6)),
         'Sale Theme': 'Great offers on fashion. 50-80% off on clothing and footwear.'
     },
     'Big Saving Days': {
-        'Expected Date': 'June 10th to June 14th',
+        'Expected Date': (datetime(2024, 6, 10), datetime(2024, 6, 14)),
         'Sale Theme': 'Best offers and discounts on mobile, electronics, TVs, appliances, home furnishing, home decor, kitchen, fashion, beauty etc.'
     },
     'Grand Home Appliances Sale': {
-        'Expected Date': 'June 18th to June 22nd',
+        'Expected Date': (datetime(2024, 6, 18), datetime(2024, 6, 22)),
         'Sale Theme': 'Good discounts on home appliances such as washing machines, refrigerators, etc.'
     },
     'Big Bachat Dhamaal Sale': {
-        'Expected Date': 'June 23rd to June 25th',
+        'Expected Date': (datetime(2024, 6, 23), datetime(2024, 6, 25)),
         'Sale Theme': 'Offers on electronics, discounts on smartphones, TVs, laptops, fashion, home appliances, home furnishing, home decor, kitchen, beauty, toys and more.'
     },
     'Big Bachat Dhamaal Sale': {
-        'Expected Date': 'July 1st to July 3rd',
+        'Expected Date': (datetime(2024, 7, 1), datetime(2024, 7, 3)),
         'Sale Theme': 'Offers on electronics, discounts on smartphones, TVs, laptops, fashion, home appliances, home furnishing, home decor, kitchen, beauty, toys and more.'
     },
     'Big Saving Days': {
-        'Expected Date': 'July 15th to July 19th',
+        'Expected Date': (datetime(2024, 7, 15), datetime(2024, 7, 19)),
         'Sale Theme': 'Best offers and discounts on mobile, electronics, TVs, appliances, home furnishing, home decor, kitchen, fashion, beauty, toys, baby care, etc.'
     },
     'Flipkart Big Freedom Sale': {
-        'Expected Date': 'August 5th to August 9th',
+        'Expected Date': (datetime(2024, 8, 5), datetime(2024, 8, 9)),
         'Sale Theme': 'Discounts and deals on smartphones, TVs, laptops, electronics, home appliances, kitchen, fashion and more.'
     },
     'Independence Day Sale': {
-        'Expected Date': 'August 12th to August 15th',
+        'Expected Date': (datetime(2024, 8, 12), datetime(2024, 8, 15)),
         'Sale Theme': 'Offers on smartphones, electronics, home appliances, kitchen, fashion, clothing, beauty and more.'
     },
     'Flipkart TV Day Sale': {
-        'Expected Date': 'August 16th to August 18th',
+        'Expected Date': (datetime(2024, 8, 16), datetime(2024, 8, 18)),
         'Sale Theme': 'Great offers and discounts on TVs and Smart TVs.'
     },
     'Month-End Mobile Fest': {
-        'Expected Date': 'August 25th to August 31st',
+        'Expected Date': (datetime(2024, 8, 25), datetime(2024, 8, 31)),
         'Sale Theme': 'Offers and deals on best-selling smartphones.'
     },
     'Mega Monsoon Days Sale': {
-        'Expected Date': 'August 26th to August 31st',
+        'Expected Date': (datetime(2024, 8, 26), datetime(2024, 8, 31)),
         'Sale Theme': 'Best offers on TV, appliances, clothing, groceries and more.'
     },
     'Grand Home Appliances Sale': {
-        'Expected Date': 'September 7th to September 11th',
+        'Expected Date': (datetime(2024, 9, 7), datetime(2024, 9, 11)),
         'Sale Theme': 'Discounts and deals on home appliances and kitchen appliances.'
     },
     'Budget Dhamaka Sale': {
-        'Expected Date': 'September 14th to September 16th',
+        'Expected Date': (datetime(2024, 9, 14), datetime(2024, 9, 16)),
         'Sale Theme': 'Offers on TV, appliances, fashion, groceries, kitchen appliances and more.'
     },
     'Flipkart Big Billion Day Sale': {
-        'Expected Date': 'October 8th to October 15th',
+        'Expected Date': (datetime(2024, 10, 8), datetime(2024, 10, 15)),
         'Sale Theme': 'Biggest deals and discounts on mobiles, electronics, TVs, appliances, home furnishing, home decor, kitchen, fashion, beauty, etc.'
     },
     'Flipkart Big Dussehra Sale': {
-        'Expected Date': 'October 22nd to October 29th',
+        'Expected Date': (datetime(2024, 10, 22), datetime(2024, 10, 29)),
         'Sale Theme': 'Offers on smartphones, TVs, electronics, laptops, tablets, home appliances, kitchen appliances, fashion and more.'
     },
     'Flipkart Big Diwali Sale': {
-        'Expected Date': 'November 2nd to November 11th',
+        'Expected Date': (datetime(2024, 11, 2), datetime(2024, 11, 11)),
         'Sale Theme': 'On the occasion of the Diwali festive season, Flipkart offers big deals and discounts on mobiles, electronics, TVs, appliances, home furnishing, home decor, kitchen, fashion, beauty, etc.'
     },
     'Flipkart Diwali Dhamaka Sale': {
-        'Expected Date': 'November 12th to November 15th',
+        'Expected Date': (datetime(2024, 11, 12), datetime(2024, 11, 15)),
         'Sale Theme': 'Offers on smartphones, electronics, home appliances, kitchen, fashion, clothing, beauty and more.'
     },
     'Black Friday Sale': {
-        'Expected Date': 'November 27th to November 30th',
+        'Expected Date': (datetime(2024, 11, 27), datetime(2024, 11, 30)),
         'Sale Theme': 'Sale on multiple categories on the occasion of Black Friday.'
     },
     'Big Bachaat Sale': {
-        'Expected Date': 'December 1st to December 3rd',
+        'Expected Date': (datetime(2024, 12, 1), datetime(2024, 12, 3)),
         'Sale Theme': 'Great discounts and offers on electronics, smartphones, TVs, appliances, fashion and more.'
     },
     'Big Saving Days': {
-        'Expected Date': 'December 16th to December 21st',
+        'Expected Date': (datetime(2024, 12, 16), datetime(2024, 12, 21)),
         'Sale Theme': 'Best offers and discounts on mobile, electronics, TVs, appliances, home furnishing, etc.'
     },
     'Grand Gadget Days Sale': {
-        'Expected Date': 'December 29th to December 31st',
+        'Expected Date': (datetime(2024, 12, 29), datetime(2024, 12, 31)),
         'Sale Theme': 'Biggest deals on smartphones, TWS, audio, electronics, TVs, and more.'
     },
     'Flipkart Year-End Sale': {
-        'Expected Date': 'December 24th to December 31st',
+        'Expected Date': (datetime(2024, 12, 24), datetime(2024, 12, 31)),
         'Sale Theme': 'Best deals on multiple categories such as electronics, smartphones, TVs, tablets, fashion, kitchen, etc.'
     }
 }
 
-# Define Amazon sale data
 amazon_sales = {
     'Amazon Great RepublicDay Sale': {
-        'Expected Dates': 'January 14th to January 18th',
+        'Expected Dates': (datetime(2024, 1, 14), datetime(2024, 1, 18)),
         'Product categories': 'Electronic devices, home, kitchen, and appliance',
         'Discounts': '60% off plus 10% on SBI credit card swipes'
     },
     'Grand Gaming Days': {
-        'Expected Dates': 'January 8th to January 30th',
+        'Expected Dates': (datetime(2024, 1, 8), datetime(2024, 1, 30)),
         'Product categories': 'Gaming gadgets',
         'Discounts': '60% off'
     },
     'Valentine’s Day Store': {
-        'Expected Dates': 'February 2th to February 14th',
+        'Expected Dates': (datetime(2024, 2, 2), datetime(2024, 2, 14)),
         'Product categories': 'Tech Products',
         'Discounts': 'Up to 70% off'
     },
     'Amazon Fab Phone Fest': {
-        'Expected Dates': 'February 22th to February 25th',
+        'Expected Dates': (datetime(2024, 2, 22), datetime(2024, 2, 25)),
         'Product categories': 'Various categories',
         'Discounts': '40% off + 10% cash back on big brands'
     },
     'Super Value Days offer': {
-        'Expected Dates': 'March 1st to March 7th',
+        'Expected Dates': (datetime(2024, 3, 1), datetime(2024, 3, 7)),
         'Product categories': 'Everyday supplies and groceries',
         'Discounts': '10% off'
     },
     'Amazon Holi Sale': {
-        'Expected Dates': 'March 5th to March 9th',
+        'Expected Dates': (datetime(2024, 3, 5), datetime(2024, 3, 9)),
         'Product categories': 'Fashion, beauty, appliances, etc.',
         'Discounts': 'Various deals and offers: SBI bank cards offer'
     },
     'Amazon Summer Offer': {
-        'Expected Dates': 'May 4th to May 8th',
+        'Expected Dates': (datetime(2024, 5, 4), datetime(2024, 5, 8)),
         'Product categories': 'Various categories',
         'Discounts': 'Up to 50% off, additional bank offers'
     },
     'Great Indian Summer Sale': {
-        'Expected Dates': 'May 13th to May 17th',
+        'Expected Dates': (datetime(2024, 5, 13), datetime(2024, 5, 17)),
         'Product categories': 'Electronic items',
         'Discounts': 'Up to 70% off'
     },
     'Prime Day Sale': {
-        'Expected Dates': 'July 26th to July 27th',
+        'Expected Dates': (datetime(2024, 7, 26), datetime(2024, 7, 27)),
         'Product categories': 'Several categories',
         'Discounts': 'Various discounts and deals'
     },
     'Great Freedom Fest': {
-        'Expected Dates': 'August 5th to August 9th',
+        'Expected Dates': (datetime(2024, 8, 5), datetime(2024, 8, 9)),
         'Product categories': 'All categories',
         'Discounts': 'Up to 80 % + additional 10% off'
     },
     'Amazon Black Friday Sale': {
-        'Expected Dates': 'November 22nd to November 25th',
+        'Expected Dates': (datetime(2024, 11, 22), datetime(2024, 11, 25)),
         'Product categories': 'Fashion, electronics, etc.',
         'Discounts': 'Great discounts'
     },
     'Christmas Offer': {
-        'Expected Dates': 'December 21st to December 25th',
+        'Expected Dates': (datetime(2024, 12, 21), datetime(2024, 12, 25)),
         'Product categories': 'Winter wear',
         'Discounts': 'Discounts and offers'
     }
 }
 
-# Create a nested dictionary for both Flipkart and Amazon
-sales_data = {
-    'flipkart': flipkart_sales,
-    'amazon': amazon_sales
-}
+current_date_time = datetime(2024, 3, 9)  # Example current date and time
 
-# Function to parse date strings and remove suffixes (e.g., 'th', 'st', 'nd', 'rd')
-def parse_date(date_str):
-    return datetime.strptime(date_str.replace('th', '').replace('st', '').replace('nd', '').replace('rd', ''), '%B %d')
+upcoming_flipkart_sales = {}
+upcoming_amazon_sales = {}
 
-# Function to find the closest approaching sale for Flipkart
-def closest_sale(sales, month):
-    closest_sale = min(sales.keys(), key=lambda x: abs((parse_date(sales[x]['Expected Date'].split(' to ')[0]) - parse_date(month)).days))
-    return closest_sale
+# Flipkart sales
+for sale_name, sale_info in flipkart_sales.items():
+    start_date, end_date = sale_info['Expected Date']
+    if current_date_time < start_date:
+        upcoming_flipkart_sales[sale_name] = sale_info
 
-# Example usage:
-current_month = 'August'  # Change this to the desired month
-closest_flipkart_sale = closest_sale(flipkart_sales, current_month)
-closest_amazon_sale = closest_sale(amazon_sales, current_month)
+# Amazon sales
+for sale_name, sale_info in amazon_sales.items():
+    start_date, end_date = sale_info['Expected Dates']
+    if current_date_time < start_date:
+        upcoming_amazon_sales[sale_name] = sale_info
 
-print("Next upcoming sale on Flipkart in", current_month, ":", closest_flipkart_sale)
-print("Next upcoming sale on Amazon in", current_month, ":", closest_amazon_sale)
+# Print upcoming Flipkart sales
+print("Upcoming Flipkart Sales:")
+for sale_name, sale_info in upcoming_flipkart_sales.items():
+    start_date_text = sale_info['Expected Date'][0].strftime("%dth %B %Y")
+    end_date_text = sale_info['Expected Date'][1].strftime("%dth %B %Y")
+    print(f"{sale_name}: {start_date_text} - {end_date_text} | {sale_info['Sale Theme']}")
+
+# Print upcoming Amazon sales
+print("\nUpcoming Amazon Sales:")
+for sale_name, sale_info in upcoming_amazon_sales.items():
+    start_date_text = sale_info['Expected Dates'][0].strftime("%dth %B %Y")
+    end_date_text = sale_info['Expected Dates'][1].strftime("%dth %B %Y")
+    print(f"{sale_name}: {start_date_text} - {end_date_text} | {sale_info['Product categories']}, Discounts: {sale_info['Discounts']}")
