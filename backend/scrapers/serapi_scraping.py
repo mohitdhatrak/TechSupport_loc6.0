@@ -1,17 +1,18 @@
 import requests
 from bs4 import BeautifulSoup
+import json
+import re
+import random
+from generic_reviews import generic_reviews
 import pprint
 from serpapi import GoogleSearch
-import re
-from generic_reviews import generic_reviews
-import random
 
 # Regular expressions for filtering links
 flipkart_pattern = re.compile(r"/p/\w+")
 ebay_pattern = re.compile(r"/itm/\d+")
 indiamart_pattern = re.compile(r"/proddetail/")
 
-#main function
+# Main function to extract search results
 def extract_search_results(query, platform):
     params = {
         "q": f"Buy {query} at best price {platform}",
@@ -41,6 +42,7 @@ def extract_search_results(query, platform):
 
     return flipkart_links, ebay_links, indiamart_links
 
+# Function to filter links based on platform
 def filter_links(links, platform):
     if platform == "flipkart":
         return [link for link in links if flipkart_pattern.search(link)]
@@ -49,6 +51,7 @@ def filter_links(links, platform):
     elif platform == "indiamart":
         return [link for link in links if indiamart_pattern.search(link)]
 
+# Function to scrape eBay data
 def ebay_scraper(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
@@ -73,6 +76,7 @@ def ebay_scraper(url):
     
     description = "lorem ipsum"
     
+    # Randomly select 4 user reviews
     user_reviews = random.sample(generic_reviews, 4) 
 
     result = {
@@ -87,6 +91,7 @@ def ebay_scraper(url):
 
     return result
 
+# Function to scrape Flipkart data
 def flipkart_scraper(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
@@ -114,6 +119,7 @@ def flipkart_scraper(url):
     highlights_div = soup.find('div', class_='_2cM9lP')
     highlights_list = [li.text.strip() for li in highlights_div.find_all('li')] if highlights_div else []
     
+    # Randomly select 4 user reviews
     user_reviews = random.sample(generic_reviews, 4)
     
     result = {
@@ -128,6 +134,7 @@ def flipkart_scraper(url):
 
     return result
 
+# Function to scrape Indiamart data
 def indiamart_scraper(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
@@ -163,6 +170,7 @@ def indiamart_scraper(url):
     
     reviews_count = "1851"
     
+    # Randomly select 4 user reviews
     user_reviews = random.sample(generic_reviews, 4)
 
     result = {
@@ -177,23 +185,31 @@ def indiamart_scraper(url):
 
     return result
 
+# Main code execution
 queries = ["Iphone 15"]
 platforms = ["flipkart", "ebay", "indiamart"]
 
+# Dictionary to store scraped data for each platform
+scraped_data_dict = {"flipkart": [], "ebay": [], "indiamart": []}
+
 for product in queries:
     for platform in platforms:
-        print(f"Results for: {platform} {product}")
         flipkart_links, ebay_links, indiamart_links = extract_search_results(product, platform)
         if platform == "flipkart":
             for link in flipkart_links:
                 product_data = flipkart_scraper(link)
-                pprint.pprint(product_data)
+                scraped_data_dict["flipkart"].append(product_data)
         elif platform == "ebay":
             for link in ebay_links:
                 product_data = ebay_scraper(link)
-                pprint.pprint(product_data)
+                scraped_data_dict["ebay"].append(product_data)
         elif platform == "indiamart":
             for link in indiamart_links:
                 product_data = indiamart_scraper(link)
-                pprint.pprint(product_data)
-        print("\n")
+                scraped_data_dict["indiamart"].append(product_data)
+
+# Convert scraped data dictionary to JSON format
+json_data = json.dumps(scraped_data_dict)
+
+# Print the JSON data
+print(json_data)
