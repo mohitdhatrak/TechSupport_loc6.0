@@ -135,18 +135,25 @@ def ebay_scraper(url):
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, 'html.parser')
 
-    title = soup.find('h1', class_="x-item-title__mainTitle").text.strip()
-    price = soup.find('div', class_="x-price-primary").text.strip()
-    info = soup.find('div', class_="ux-layout-section__item").text.strip()
+    # Get title
+    title_tag = soup.find('h1', class_="x-item-title__mainTitle")
+    title = title_tag.text.strip() if title_tag else ""
 
+    # Get price
+    price_tag = soup.find('div', class_="x-price-primary")
+    price = price_tag.text.strip() if price_tag else ""
+
+    # Get image URL
     div_tag = soup.find('div', class_='ux-image-carousel-item')
     image_url = div_tag.find('img')['src'] if div_tag and div_tag.find('img') else ""
 
+    # Get reviews count
     reviews_container = soup.find('div', class_="d-stores-info-categories__details-container__tabbed-list")
     reviews_count = len(reviews_container.find_all(text="Verified purchase")) if reviews_container else 0
     
+    # Get description
     description = "lorem ipsum"
-    
+
     # Randomly select 4 user reviews
     user_reviews = random.sample(generic_reviews, 4) 
 
@@ -160,7 +167,7 @@ def ebay_scraper(url):
         'user_reviews': user_reviews
     }
 
-    return result
+    return result 
 
 # Function to scrape Flipkart data
 def flipkart_scraper(url):
@@ -176,20 +183,28 @@ def flipkart_scraper(url):
     soup = BeautifulSoup(page.content, 'html.parser')
     
 
-    title = soup.find('h1', class_="yhB1nd").text.strip()
+    # Get title
+    title_tag = soup.find('h1', class_="yhB1nd")
+    title = title_tag.text.strip() if title_tag else ""
 
+    # Get image URL
     img_tag = soup.find('img', class_='_396cs4 _2amPTt _3qGmMb')
     image_src = img_tag['src'] if img_tag else ""
 
-    value = soup.find('span', class_="_2_R_DZ").text.strip()
-    split = value.split("&")
+    # Get reviews count
+    value_tag = soup.find('span', class_="_2_R_DZ")
+    value_text = value_tag.text.strip() if value_tag else ""
+    split = value_text.split("&")
     reviews = split[1].split()[0] if len(split) > 1 else "0"
 
-    price = soup.find('div', class_="_30jeq3 _16Jk6d").text.strip()
+    # Get price
+    price_tag = soup.find('div', class_="_30jeq3 _16Jk6d")
+    price = price_tag.text.strip() if price_tag else ""
 
+    # Get highlights list
     highlights_div = soup.find('div', class_='_2cM9lP')
     highlights_list = [li.text.strip() for li in highlights_div.find_all('li')] if highlights_div else []
-    
+
     # Randomly select 4 user reviews
     user_reviews = random.sample(generic_reviews, 4)
     
@@ -218,11 +233,15 @@ def indiamart_scraper(url):
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, 'html.parser')
     
-    title = soup.find('h1', class_="bo center-heading").text.strip()
+    # Get title
+    title_tag = soup.find('h1', class_="bo center-heading")
+    title = title_tag.text.strip() if title_tag else ""
 
+    # Get price
     price_element = soup.find('span', class_='bo price-unit')
     price = price_element.text.strip().split('/')[0] if price_element else "Price not available"
 
+    # Get table data
     div_tag = soup.find('div', class_='dtlsec1')
     table_data = {}
     if div_tag:
@@ -236,16 +255,17 @@ def indiamart_scraper(url):
                     value = cells[1].text.strip()
                     table_data[key] = value
 
+    # Get image URL
     img_tag = soup.find('img', class_='img-drift-demo-trigger')
     image_src = img_tag['src'] if img_tag else ""
     
     reviews_count = "1851"
-    
+
     # Randomly select 4 user reviews
     user_reviews = random.sample(generic_reviews, 4)
 
     result = {
-        'source' : 'indiamart',
+        'source': 'indiamart',
         'title': title,
         'price': price,
         'reviews_count': reviews_count,
@@ -257,7 +277,7 @@ def indiamart_scraper(url):
     return result
 
 # Main code execution
-queries = ["Iphone 15"]
+# queries = ["Iphone 15"]
 platforms = ["flipkart", "ebay", "indiamart"]
 
 # Dictionary to store scraped data for each platform
@@ -427,27 +447,4 @@ async def get_product_data(title: str):
 
     return scraped_data_dict
 
-    # Perform search and scrape data for the given title
-    scraped_data_dict = {"flipkart": [], "ebay": [], "indiamart": []}
-    platforms = ["flipkart", "ebay", "indiamart"]
     
-    for platform in platforms:
-        flipkart_links, ebay_links, indiamart_links = extract_search_results(title, platform)
-        if platform == "flipkart":
-            for link in flipkart_links:
-                product_data = flipkart_scraper(link)
-                scraped_data_dict["flipkart"].append(product_data)
-        elif platform == "ebay":
-            for link in ebay_links:
-                product_data = ebay_scraper(link)
-                scraped_data_dict["ebay"].append(product_data)
-        elif platform == "indiamart":
-            for link in indiamart_links:
-                product_data = indiamart_scraper(link)
-                scraped_data_dict["indiamart"].append(product_data)
-    
-    # Check if any data has been scraped
-    if not any(scraped_data_dict.values()):
-        raise HTTPException(status_code=404, detail="No products found")
-
-    return scraped_data_dict
