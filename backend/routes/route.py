@@ -319,6 +319,9 @@ def indiamart_scraper(url):
     else:
         category = ''
 
+    # Initialize desired_content with an empty string
+    desired_content = ""
+
     # If category is not an empty string, proceed with extracting the desired content
     if category:
         first_index = category.find('>')
@@ -334,7 +337,6 @@ def indiamart_scraper(url):
     else:
         print("Category is empty.")
     
-
     result = {
         'source': 'indiamart',
         'title': title,
@@ -342,8 +344,8 @@ def indiamart_scraper(url):
         'reviews_count': reviews_count,
         'description': table_data,
         'image_url': image_src,
-        'user_reviews': user_reviews,
-        'url': url,  # Include the URL here
+        'user_reviews': generic_reviews,  # You might need to define 'generic_reviews'
+        'url': url,  
         'category': desired_content
     }
 
