@@ -1,26 +1,27 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from models.todos import Todo
-from models.user import User, UpdateUser
-from config.database import user_collection, collection_name
-from schema.schemas import list_serial
-from bson import ObjectId
-import bcrypt
-from transformers import pipeline
-from fastapi import File, UploadFile
-import shutil
 import os
-UPLOAD_DIR = "profile_photos"
-from typing import Dict
-# from ..scrapers.serapi_scraping import ebay_scraper,flipkart_scraper,indiamart_scraper,extract_search_results
+import shutil
 
+import bcrypt
+from bson import ObjectId
+from config.database import collection_name, user_collection
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from models.todos import Todo
+from models.user import UpdateUser, User
+from schema.schemas import list_serial
+from transformers import pipeline
+
+UPLOAD_DIR = "profile_photos"
+import json
+import pprint
+import random
+import re
+from typing import Dict
 
 import requests
 from bs4 import BeautifulSoup
-import json
-import re
-import random
-import pprint
 from serpapi import GoogleSearch
+
+# from ..scrapers.serapi_scraping import ebay_scraper,flipkart_scraper,indiamart_scraper,extract_search_results
 
 generic_reviews = [
     {'name': 'John Doe', 'stars': 4, 'review': 'Great product, highly recommended! It exceeded my expectations and works flawlessly. The build quality is exceptional, and the features are exactly what I needed. I would definitely buy it again.'},
@@ -87,7 +88,7 @@ indiamart_pattern = re.compile(r"/proddetail/")
 def extract_search_results(query, platform):
     params = {
         "q": f"Buy {query} at best price {platform}",
-        "api_key": "80f40b48b2e799f40e5bfe9ebbb9f2e0dc267db2da8abb7b2f564fa25148067c"  # Replace this with your actual SerpApi API key
+        "api_key": "819ebc51c95c1dc44901f05a67fa207474390ff1eb8ae19ca71744c1bf876c8c"  # Replace this with your actual SerpApi API key
     }
 
     search = GoogleSearch(params)

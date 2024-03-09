@@ -54,3 +54,31 @@
   text-align: center;
 }
 
+.search-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-button {
+  font-size: 1.1rem;
+  width: max-content;
+  margin: 2rem auto;
+  padding: 10px 20px;
+  background-color: #fff;
+  color: #1877f2;
+  border: 1px solid #1877f2;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #1877f2;
+  color: #fff;
+  border: none;
+}
+
+.search-button:focus {
+  outline: none;
+}
