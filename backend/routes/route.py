@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from models.todos import Todo
 from models.user import UpdateUser, User
 from schema.schemas import list_serial
-from transformers import pipeline
+# from transformers import pipeline
 
 UPLOAD_DIR = "profile_photos"
 import json

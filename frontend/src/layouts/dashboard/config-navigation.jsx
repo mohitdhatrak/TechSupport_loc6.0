@@ -10,11 +10,11 @@ const navConfig = [
     path: '/',
     icon: icon('ic_analytics'),
   },
-  {
-    title: 'compare',
-    path: '/products',
-    icon: icon('ic_cart'),
-  },
+  // {
+  //   title: 'compare',
+  //   path: '/products',
+  //   icon: icon('ic_cart'),
+  // },
   {
     title: 'analyze',
     path: '/blog',
