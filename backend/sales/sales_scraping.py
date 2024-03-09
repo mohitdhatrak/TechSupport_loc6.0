@@ -178,7 +178,7 @@ amazon_sales = {
     }
 }
 
-current_date_time = datetime(2024, 3, 9)  # Example current date and time
+current_date_time = datetime.now()
 
 upcoming_flipkart_sales = {}
 upcoming_amazon_sales = {}
