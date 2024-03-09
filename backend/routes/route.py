@@ -313,14 +313,13 @@ def indiamart_scraper(url):
     # Randomly select 4 user reviews
     user_reviews = random.sample(generic_reviews, 4)
     
-    category =  soup.find('div', class_="fs12 pb10 mt10 vcrmb").text
-    first_index = category.find('>')
-
-    # Find the index of the next '>' character after the first one
-    second_index = category.find('>', first_index + 1)
-
-    # Extract the desired content
-    desired_content = category[first_index + 2:second_index].strip()
+    category_div = soup.find_all('a', class_="color5")
+    j = []
+    for i in category_div:
+        j.append(i.text)
+        
+    category = j[1]
+    
 
     result = {
         'source': 'indiamart',
@@ -331,64 +330,12 @@ def indiamart_scraper(url):
         'image_url': image_src,
         'user_reviews': user_reviews,
         'url': url,  # Include the URL here
-        'category': desired_content
+        'category': category
     }
 
     return result
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,/;q=0.8',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Connection': 'keep-alive'
-    }
 
-    page = requests.get(url, headers=headers)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    
-    # Get title
-    title_tag = soup.find('h1', class_="bo center-heading")
-    title = title_tag.text.strip() if title_tag else ""
-
-    # Get price
-    price_element = soup.find('span', class_='bo price-unit')
-    price = price_element.text.strip().split('/')[0] if price_element else "Price not available"
-
-    # Get table data
-    div_tag = soup.find('div', class_='dtlsec1')
-    table_data = {}
-    if div_tag:
-        table = div_tag.find('table')
-        if table:
-            rows = table.find_all('tr')
-            for row in rows:
-                cells = row.find_all('td')
-                if len(cells) == 2:
-                    key = cells[0].text.strip()
-                    value = cells[1].text.strip()
-                    table_data[key] = value
-
-    # Get image URL
-    img_tag = soup.find('img', class_='img-drift-demo-trigger')
-    image_src = img_tag['src'] if img_tag else ""
-    
-    reviews_count = "1851"
-
-    # Randomly select 4 user reviews
-    user_reviews = random.sample(generic_reviews, 4)
-
-    result = {
-        'source': 'indiamart',
-        'title': title,
-        'price': price,
-        'reviews_count': reviews_count,
-        'description': table_data,
-        'image_src': image_src,
-        'user_reviews': user_reviews
-    }
-
-    return result
 
 # Main code execution
 queries = ["Iphone 15"]
