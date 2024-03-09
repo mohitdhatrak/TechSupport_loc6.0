@@ -11,6 +11,7 @@ import ProductCard from '../product-card';
 import ProductSort from '../product-sort';
 import ProductFilters from '../product-filters';
 import ProductCartWidget from '../product-cart-widget';
+// import ProdComp from '../../blog/view/prodComp';
 
 export default function ProductsView() {
   const [openFilter, setOpenFilter] = useState(false);
