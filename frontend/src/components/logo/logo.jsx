@@ -10,7 +10,11 @@ import logoIcon from '../../../public/favicon/android-chrome-512x512.png';
 
 const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
   const logo = (
-    <Box component="img" src={logoIcon} sx={{ width: 40, height: 40, cursor: 'pointer', ...sx }} />
+    <Box
+      component="img"
+      src={logoIcon}
+      sx={{ width: 40, height: 40, cursor: 'pointer', borderRadius: '50%', ...sx }}
+    />
   );
 
   if (disabledLink) {
