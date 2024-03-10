@@ -10,7 +10,6 @@ from models.todos import Todo
 from models.user import UpdateUser, User
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from schema.schemas import list_serial
-from transformers import pipeline
 
 nltk.download('vader_lexicon')  # Move this line here
 from typing import Dict, List
@@ -345,13 +344,12 @@ def ebay_scraper(url):
         print("No div tag found with the specified class")
 
     reviews_container = soup.find('div', class_="d-stores-info-categories__details-container__tabbed-list")
-
-    reviews_count = 0
-    if reviews_container:
-        raw_reviews = reviews_container.text.strip()
-        reviews = raw_reviews.split("Verified purchase")[1:]
-        reviews_count = len(reviews)
-
+    reviews_count = len(reviews_container.find_all(text="Verified purchase")) if reviews_container else 0
+    
+    description = "lorem ipsum"
+    
+    user_reviews = random.sample(generic_reviews, 4) 
+    
     # Scraping product category
     category = soup.find('a', class_="seo-breadcrumb-text")
     product_category = category.text.strip() if category else "Category not found"
@@ -360,12 +358,15 @@ def ebay_scraper(url):
         'source': 'ebay',
         'title': title,
         'price': price,
-        'image_url': image_url,
         'reviews_count': reviews_count,
+        'description': description,
+        'image_url': image_url,
+        'user_reviews': user_reviews,
         'product_category': product_category
     }
 
     return result
+    
 
 def flipkart_scraper(url):
     headers = {
@@ -379,37 +380,22 @@ def flipkart_scraper(url):
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, 'html.parser')
     
-    data = {'source': 'Flipkart'}
-
-    title = soup.find('h1', class_="yhB1nd").text
-    data['title'] = title
+    title = soup.find('h1', class_="yhB1nd").text.strip()
 
     img_tag = soup.find('img', class_='_396cs4 _2amPTt _3qGmMb')
-    image_src = img_tag['src']
-    data['image'] = image_src
+    image_src = img_tag['src'] if img_tag else ""
 
     value = soup.find('span', class_="_2_R_DZ").text.strip()
     split = value.split("&")
-    ratings = split[0].split()[0]
-    reviews = split[1].split()[0]
-    # data['ratings'] = ratings
-    data['reviews_count'] = reviews
+    reviews = split[1].split()[0] if len(split) > 1 else "0"
 
-    stars = soup.find('div', class_="_3LWZlK").text
-    # data['stars'] = stars
-
-    price = soup.find('div', class_="_30jeq3 _16Jk6d").text
-    data['price'] = price
+    price = soup.find('div', class_="_30jeq3 _16Jk6d").text.strip()
 
     highlights_div = soup.find('div', class_='_2cM9lP')
-    if highlights_div:
-        highlights_title_div = highlights_div.find('div', class_='_3a9CI2')
-        highlights_ul = highlights_div.find('ul')
-        highlights_title = highlights_title_div.text.strip() if highlights_title_div else None
-        highlights_list = [li.text.strip() for li in highlights_ul.find_all('li')] if highlights_ul else []
-        data['description'] = highlights_list
+    highlights_list = [li.text.strip() for li in highlights_div.find_all('li')] if highlights_div else []
     
-    # Extracting product category
+    user_reviews = random.sample(generic_reviews, 4)
+    
     category_div = soup.find_all('a', class_="_2whKao")
     j = []
     for i in category_div:
@@ -417,9 +403,21 @@ def flipkart_scraper(url):
         
     category = j[1]
     
-    data['product_category'] = category
+    result = {
+        'source': 'Flipkart',
+        'title': title,
+        'price': price,
+        'reviews_count': reviews, 
+        'description': highlights_list,
+        'image_url': image_src,
+        'user_reviews': user_reviews,
+        'product_category': category
+        
+    }
 
-    return data
+    return result
+    
+
 
 # Function to scrape Indiamart data
 def indiamart_scraper(url):
@@ -434,7 +432,6 @@ def indiamart_scraper(url):
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, 'html.parser')
     
-    # Get title
     title_tag = soup.find('h1', class_="bo center-heading")
     title = title_tag.text.strip() if title_tag else ""
 
@@ -442,7 +439,6 @@ def indiamart_scraper(url):
     price_element = soup.find('span', class_='bo price-unit')
     price = price_element.text.strip().split('/')[0] if price_element else "Price not available"
 
-    # Get table data
     div_tag = soup.find('div', class_='dtlsec1')
     table_data = {}
     if div_tag:
@@ -456,13 +452,13 @@ def indiamart_scraper(url):
                     value = cells[1].text.strip()
                     table_data[key] = value
 
-    # Get image URL
     img_tag = soup.find('img', class_='img-drift-demo-trigger')
     image_src = img_tag['src'] if img_tag else ""
     
     reviews_count = "1851"
-
-    # Randomly select 4 user reviews
+    
+    user_reviews = random.sample(generic_reviews, 4)
+    
     category_element = soup.find('div', class_="fs12 pb10 mt10 vcrmb")
 
     # Check if category_element is not None
@@ -488,20 +484,25 @@ def indiamart_scraper(url):
             print("Desired content cannot be extracted due to invalid indices.")
     else:
         print("Category is empty.")
-    
+
     result = {
-        'source': 'indiamart',
+        'source' : 'indiamart',
         'title': title,
         'price': price,
         'reviews_count': reviews_count,
         'description': table_data,
-        'image_url': image_src,
-        'user_reviews': generic_reviews,  # You might need to define 'generic_reviews'
-        'url': url,  
-        'category': desired_content
+        'image_src': image_src,
+        'user_reviews': user_reviews,
+        'product_category': desired_content
+        
     }
 
     return result
+    
+    
+    
+    
+    
 
 
 
