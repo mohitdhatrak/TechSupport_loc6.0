@@ -49,6 +49,28 @@ generic_reviews = [
     {'name': 'Akshay Sharma', 'stars': 4, 'review': 'I am satisfied with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely recommend it to others.'}
 ]
 
+product_features = [
+    "High-quality materials ensure durability",
+    "Sleek and modern design",
+    "User-friendly interface for easy operation",
+    "Versatile functionality to meet various needs",
+    "Compact size for convenient storage and transport",
+    "Efficient performance for optimal results",
+    "Multiple color options to suit personal preferences",
+    "Long-lasting battery life for extended usage",
+    "Ergonomic design for comfortable handling",
+    "Advanced technology for enhanced performance",
+    "Easy maintenance and cleaning",
+    "Affordable pricing for budget-conscious consumers",
+    "Excellent customer support and after-sales service",
+    "Compatibility with other devices for seamless integration",
+    "Safety features for peace of mind during use",
+    "Compact footprint to save space",
+    "Intuitive controls for hassle-free operation",
+    "Customizable settings to personalize the experience",
+    "Energy-efficient design to reduce power consumption",
+    "Stylish aesthetics to complement any environment"
+]
 
 flipkart_sales = {
     'Big Saving Days': {
@@ -312,7 +334,7 @@ def ebay_scraper(url):
     reviews_container = soup.find('div', class_="d-stores-info-categories__details-container__tabbed-list")
     reviews_count = len(reviews_container.find_all(text="Verified purchase")) if reviews_container else 0
     
-    description = "lorem ipsum"
+    description = random.sample(product_features, 4)
     
     user_reviews = random.sample(generic_reviews, 4) 
     
