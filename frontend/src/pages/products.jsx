@@ -6,7 +6,7 @@ export default function ProductsPage() {
   return (
     <>
       <Helmet>
-        <title> Products | eCompare </title>
+        <title> Products | Crowd Zero </title>
       </Helmet>
 
       <ProductsView />

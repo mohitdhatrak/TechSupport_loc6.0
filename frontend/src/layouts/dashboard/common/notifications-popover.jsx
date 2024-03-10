@@ -36,7 +36,7 @@ const NOTIFICATIONS = [
   {
     id: faker.string.uuid(),
     title: faker.person.fullName(),
-    description: 'answered to your comment on the eCompare',
+    description: 'answered to your comment on the Crowd Zero',
     avatar: '/assets/images/avatars/avatar.jpg',
     type: 'friend_interactive',
     createdAt: sub(new Date(), { hours: 3, minutes: 30 }),

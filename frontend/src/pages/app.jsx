@@ -6,7 +6,7 @@ export default function AppPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard | eCompare </title>
+        <title> Dashboard | Crowd Zero </title>
       </Helmet>
 
       <AppView />

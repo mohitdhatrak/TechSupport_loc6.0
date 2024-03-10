@@ -12,9 +12,11 @@ import SearchBar from './SearchBar';
 import ProductFilters from 'src/sections/products/product-filters';
 import ProductSort from 'src/sections/products/product-sort';
 import ProductCard from 'src/sections/products/product-card';
+import { divide } from 'lodash';
 
 export default function AppView() {
   const { data, setData, dataArr, setDataArr } = useApp();
+  const [isLoading, setIsLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
   const handleSearchChange = (event) => {
@@ -31,6 +33,8 @@ export default function AppView() {
   };
 
   const getScrapedData = async () => {
+    setIsLoading(true);
+
     await axios
       .get(`http://127.0.0.1:8000/product/?title=${searchValue}`)
       .then((response) => {
@@ -44,6 +48,7 @@ export default function AppView() {
           setDataArr(arr);
           getCombinedStats(response?.data, arr);
           setSearchLoad(true);
+          setIsLoading(false);
         }
       })
       .catch((error) => console.log(error));
@@ -139,96 +144,112 @@ export default function AppView() {
 
   return (
     <>
-      {!searchLoad ? (
-        <Container maxWidth="4xl" className="app-container">
-          {/* <Typography variant="h4" sx={{ mb: 5, textAlign: 'center' }}>
-            eCompare
-          </Typography> */}
-          <h1 style={{ fontSize: '4rem', fontWeight: 'bold', color: '#333', textAlign: 'center' }}>
-            Ecompare
-          </h1>
-          <Typography
-            variant="body1"
-            className="desc1 text"
-            style={{
-              fontSize: '1.6rem',
-              whiteSpace: 'nowrap',
-              textAlign: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            A platform for comparing prices of various products across different online stores.
-          </Typography>
-          <Typography
-            variant="h3"
-            className="desc1 text"
-            style={{
-              fontSize: '1.8rem',
-              textAlign: 'center',
-              justifyContent: 'center',
-              fontWeight: 'bold',
-              backgroundImage: 'linear-gradient(to right, #0072ff, #00c6ff)',
-              WebkitBackgroundClip: 'text',
-              color: 'transparent',
-            }}
-          >
-            Best Deals-Recommendations-Analysis
-          </Typography>
-          <Typography variant="body1" className="desc2">
-            Try searching <span className="animated" />
-          </Typography>
-          <div className="search-container">
-            <SearchBar
-              label="Search products..."
-              variant="outlined"
-              value={searchValue}
-              onChange={handleSearchChange}
-            />
-            <button type="submit" className="search-button" onClick={getScrapedData}>
-              Compare
-            </button>
-          </div>
-        </Container>
+      {isLoading ? (
+        <div className="loader-container">
+          <div className="loader-text">Hang tight, while we fetch the best deals...</div>
+          <div className="loader-spinner" />
+        </div>
       ) : (
-        <Container>
-          <Typography variant="h3" sx={{ mb: 3 }}>
-            Search Results for {searchValue}
-          </Typography>
-          <Typography variant="h4" sx={{ mb: 2 }}>
-            {dataArr?.length} most relevant results...
-          </Typography>
+        <>
+          {!searchLoad ? (
+            <Container maxWidth="4xl" className="app-container">
+              {/* <Typography variant="h4" sx={{ mb: 5, textAlign: 'center' }}>
+            Crowd Zero
+          </Typography> */}
+              <h1
+                style={{ fontSize: '4rem', fontWeight: 'bold', color: '#333', textAlign: 'center' }}
+              >
+                Crowd Zero
+              </h1>
+              <Typography
+                variant="body1"
+                className="desc1 text"
+                style={{
+                  fontSize: '1.6rem',
+                  whiteSpace: 'nowrap',
+                  textAlign: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                A platform for comparing prices of various products across different online stores.
+              </Typography>
+              <Typography
+                variant="h3"
+                className="desc1 text"
+                style={{
+                  fontSize: '1.8rem',
+                  textAlign: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 'bold',
+                  backgroundImage: 'linear-gradient(to right, #0072ff, #00c6ff)',
+                  WebkitBackgroundClip: 'text',
+                  color: 'transparent',
+                }}
+              >
+                Best Deals-Recommendations-Analysis
+              </Typography>
+              <Typography variant="body1" className="desc2">
+                Try searching <span className="animated" />
+              </Typography>
+              <div className="search-container">
+                <SearchBar
+                  label="Search products..."
+                  variant="outlined"
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                />
+                <button
+                  type="submit"
+                  disabled={searchValue?.trim() === ''}
+                  className={searchValue?.trim() === '' ? 'btn-disabled' : 'search-button'}
+                  onClick={getScrapedData}
+                >
+                  Compare
+                </button>
+              </div>
+            </Container>
+          ) : (
+            <Container>
+              <Typography variant="h3" sx={{ mb: 3 }}>
+                Search Results for {searchValue}
+              </Typography>
+              <Typography variant="h4" sx={{ mb: 2 }}>
+                {dataArr?.length} most relevant results...
+              </Typography>
 
-          <Stack
-            direction="row"
-            alignItems="center"
-            flexWrap="wrap-reverse"
-            justifyContent="flex-end"
-            sx={{ mb: 5 }}
-          >
-            <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-              <ProductFilters
-                openFilter={openFilter}
-                onOpenFilter={handleOpenFilter}
-                onCloseFilter={handleCloseFilter}
-              />
+              <Stack
+                direction="row"
+                alignItems="center"
+                flexWrap="wrap-reverse"
+                justifyContent="flex-end"
+                sx={{ mb: 5 }}
+              >
+                <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
+                  <ProductFilters
+                    openFilter={openFilter}
+                    onOpenFilter={handleOpenFilter}
+                    onCloseFilter={handleCloseFilter}
+                  />
 
-              <ProductSort />
-            </Stack>
-          </Stack>
+                  <ProductSort />
+                </Stack>
+              </Stack>
 
-          <Grid container spacing={3}>
-            {/* {products.map((product) => (
+              <Grid container spacing={3}>
+                {/* {products.map((product) => (
         <Grid key={product.id} xs={12} sm={6} md={3}>
           <ProductCard product={product} />
         </Grid>
       ))} */}
-            {dataArr.map((product, index) => (
-              <Grid key={index} xs={12} sm={6} md={3}>
-                <ProductCard product={product} />
+                {dataArr.map((product, index) => (
+                  <Grid key={index} xs={12} sm={6} md={3}>
+                    <ProductCard product={product} />
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-        </Container>
+            </Container>
+          )}
+        </>
       )}
     </>
   );

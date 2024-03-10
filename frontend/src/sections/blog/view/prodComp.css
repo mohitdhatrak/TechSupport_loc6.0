@@ -11,7 +11,7 @@
 .card {
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 15px;
   box-shadow: 1px 1px 10px 1px #ddd;
   margin-bottom: 1rem;
   max-width: 300px;
@@ -19,6 +19,8 @@
   position: relative;
   width: 100%;
   text-align: center;
+  opacity: 0.8;
+  background: linear-gradient(to bottom, #e0f3ff, #c1e8ff);
 }
 
 .most-popular {
@@ -29,22 +31,27 @@
   padding: 0.25em 1rem;
   border-radius: 15px;
   text-transform: uppercase;
+  background: linear-gradient(to bottom, #9b59b6, #8e44ad);
 }
 
 .card.free {
   border-top: 6px solid #1abc9c;
+  background: linear-gradient(to bottom, #b3ecff, #7fd4f9);
 }
 
 .card.basic {
   border-top: 6px solid #3498db;
+  background: linear-gradient(to bottom, #b3ecff, #7fd4f9);
 }
 
 .card.medium {
   border-top: 6px solid #9b59b6;
+  background: linear-gradient(to bottom, #b3ecff, #7fd4f9);
 }
 
 .card.pro {
   border-top: 6px solid #f1c40f;
+  background: linear-gradient(to bottom, #b3ecff, #7fd4f9);
 }
 
 .card-description,
@@ -55,12 +62,14 @@
 }
 
 .card-description h2 {
-  font-size: 26px;
+  font-size: 1.8rem;
   margin-bottom: 0.5rem;
+  text-transform: capitalize;
+  font-weight: 600;
 }
 
 .card-billing {
-  background-color: #ecf0f1;
+  background-color: #fff;
 }
 
 .card-billing p {
@@ -90,6 +99,7 @@
   padding: 0.5rem 0;
   width: 100%;
   transition: 0.3s ease all;
+  border-radius: 10px;
 }
 
 .card-action > button:hover {

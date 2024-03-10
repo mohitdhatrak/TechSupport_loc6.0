@@ -22,11 +22,14 @@ export default function BlogView() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0}>
-        <Typography variant="h4">Comparison and Analysis</Typography>
         <Typography variant="h4">{title}</Typography>
       </Stack>
 
       <ProdComp />
+
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+        <Typography variant="h4">Comparison and Analysis</Typography>
+      </Stack>
 
       <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', marginBottom: '3rem' }}>
         <AppCurrentVisits

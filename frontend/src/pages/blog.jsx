@@ -6,7 +6,7 @@ export default function BlogPage() {
   return (
     <>
       <Helmet>
-        <title> Analyze | eCompare </title>
+        <title> Analyze | Crowd Zero </title>
       </Helmet>
 
       <BlogView />

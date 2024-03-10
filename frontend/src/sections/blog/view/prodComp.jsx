@@ -34,7 +34,7 @@ const cardsData1 = [
     data: ['10TB Storage', '500 E-mails', '20 Accounts'],
   },
 ];
-// ---------------------------------
+
 function CardDescription({ source, product_category }) {
   return (
     <div className="card-description">
@@ -48,11 +48,11 @@ function CardBilling({ price, reviews_count }) {
   return (
     <div className="card-billing">
       <p>
-        <strong className="price">₹ {price}</strong>
+        <strong className="price">{price}</strong>
         {/* <strong> / mo.</strong> */}
       </p>
       <p>
-        <span className="recurrency">Reviews Count: {reviews_count}/monthly</span>
+        <span className="recurrency">Reviews Count: {reviews_count}</span>
       </p>
     </div>
   );
@@ -77,7 +77,7 @@ function openURL(url) {
 function CardAction({ url }) {
   return (
     <div className="card-action">
-      <button onClick={(url) => openURL(url)}>CHECK</button>
+      <button onClick={() => openURL(url)}>CHECK</button>
     </div>
   );
 }

@@ -6,7 +6,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Login | eCompare </title>
+        <title> Login | Crowd Zero </title>
       </Helmet>
 
       <LoginView />
