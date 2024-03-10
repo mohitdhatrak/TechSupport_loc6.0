@@ -241,3 +241,28 @@
   width: 100%;
   text-align: center;
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  text-transform: capitalize;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.company-name {
+  font-weight: bold;
+}
+
+.sentiment-score {
+  color: green;
+}

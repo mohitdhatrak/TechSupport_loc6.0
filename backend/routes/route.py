@@ -2,15 +2,13 @@ import os
 import shutil
 
 import bcrypt
+# from transformers import pipeline
 import nltk  # Add this import statement
 from bson import ObjectId
 from config.database import collection_name, user_collection
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from models.todos import Todo
 from models.user import UpdateUser, User
-from schema.schemas import list_serial
-# from transformers import pipeline
-import nltk  # Add this import statement
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from schema.schemas import list_serial
 
@@ -227,7 +225,7 @@ indiamart_pattern = re.compile(r"/proddetail/")
 def extract_search_results(query, platform):
     params = {
         "q": f"Buy {query} at best price {platform}",
-        "api_key": "86016d52aec6be86cc6151eed46d5fe704cb3aafc83cbd0a18d8e3538c8192eb"  # Replace this with your actual SerpApi API key
+        "api_key": "5651aae179b0803b3cc42c8399f2cb0f6ac499952478d1f9ba79c2ca2bbcf0c0"
     }
 
     search = GoogleSearch(params)
