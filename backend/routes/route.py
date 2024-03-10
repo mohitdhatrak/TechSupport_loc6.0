@@ -2,25 +2,26 @@ import os
 import shutil
 
 import bcrypt
+import nltk  # Add this import statement
 from bson import ObjectId
 from config.database import collection_name, user_collection
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from models.todos import Todo
 from models.user import UpdateUser, User
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from schema.schemas import list_serial
 from transformers import pipeline
-import nltk  # Add this import statement
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
 nltk.download('vader_lexicon')  # Move this line here
-from typing import List, Dict
+from typing import Dict, List
 
 UPLOAD_DIR = "profile_photos"
 import json
 import pprint
 import random
 import re
-from typing import Dict
 from datetime import datetime
+from typing import Dict
 
 import requests
 from bs4 import BeautifulSoup
@@ -323,9 +324,14 @@ def ebay_scraper(url):
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, 'html.parser')
 
-    title = soup.find('h1', class_="x-item-title__mainTitle").text.strip()
-    price = soup.find('div', class_="x-price-primary").text.strip()
-    info = soup.find('div', class_="ux-layout-section__item").text.strip()
+    title_element = soup.find('h1', class_="x-item-title__mainTitle")
+    title = title_element.text.strip() if title_element else "Title not found"
+
+    price_element = soup.find('div', class_="x-price-primary")
+    price = price_element.text.strip() if price_element else "Price not found"
+
+    info_element = soup.find('div', class_="ux-layout-section__item")
+    info = info_element.text.strip() if info_element else "Info not found"
 
     div_tag = soup.find('div', class_='ux-image-carousel-item')
     image_url = ""
@@ -345,13 +351,13 @@ def ebay_scraper(url):
         raw_reviews = reviews_container.text.strip()
         reviews = raw_reviews.split("Verified purchase")[1:]
         reviews_count = len(reviews)
-    
+
     # Scraping product category
     category = soup.find('a', class_="seo-breadcrumb-text")
     product_category = category.text.strip() if category else "Category not found"
 
     result = {
-        'source' : 'ebay',
+        'source': 'ebay',
         'title': title,
         'price': price,
         'image_url': image_url,
@@ -387,7 +393,7 @@ def flipkart_scraper(url):
     ratings = split[0].split()[0]
     reviews = split[1].split()[0]
     # data['ratings'] = ratings
-    data['reviews'] = reviews
+    data['reviews_count'] = reviews
 
     stars = soup.find('div', class_="_3LWZlK").text
     # data['stars'] = stars
