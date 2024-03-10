@@ -12,10 +12,18 @@ export default function BlogView() {
   const { data } = useApp();
   console.log(data);
 
+  const title =
+    data?.flipkart?.length > 0
+      ? data?.flipkart[0]?.title
+      : data?.ebay?.length > 0
+      ? data?.ebay[0]?.title
+      : data?.indiamart[0]?.title;
+
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0}>
         <Typography variant="h4">Comparison and Analysis</Typography>
+        <Typography variant="h4">{title}</Typography>
       </Stack>
 
       <ProdComp />

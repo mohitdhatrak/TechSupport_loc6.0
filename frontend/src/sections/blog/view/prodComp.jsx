@@ -44,16 +44,16 @@ function CardDescription({ source, product_category }) {
   );
 }
 
-function CardBilling({ price }) {
+function CardBilling({ price, reviews_count }) {
   return (
     <div className="card-billing">
       <p>
         <strong className="price">₹ {price}</strong>
         {/* <strong> / mo.</strong> */}
       </p>
-      {/* <p>
-        <span className="recurrency">Billed Anually or $ {recurrency}/monthly</span>
-      </p> */}
+      <p>
+        <span className="recurrency">Reviews Count: {reviews_count}/monthly</span>
+      </p>
     </div>
   );
 }
@@ -62,7 +62,7 @@ function CardFeatures({ description }) {
   return (
     <div className="card-features">
       <ul>
-        {description.map((item, index) => (
+        {description?.map((item, index) => (
           <li key={index}>{item}</li>
         ))}
       </ul>
@@ -83,22 +83,13 @@ function CardAction({ url }) {
 }
 
 function PricingCard(props) {
-  const {
-    source,
-    reviews_count,
-    title,
-    description,
-    price,
-    image_url,
-    product_category,
-    data,
-    url,
-  } = props.data;
+  const { source, reviews_count, title, description, price, image_url, product_category, url } =
+    props.data;
 
   return (
     <div className={`card pricing-card ${source}`}>
       <CardDescription source={source} product_category={product_category} />
-      <CardBilling price={price} />
+      <CardBilling price={price} reviews_count={reviews_count} />
       <CardFeatures description={description} />
       <CardAction url={url} />
     </div>
@@ -107,7 +98,9 @@ function PricingCard(props) {
 
 export default function ProdComp() {
   const { data } = useApp();
+
   const cardsData = [];
+
   if (data?.flipkart?.length > 0) {
     cardsData.push(data?.flipkart[0]);
   }
