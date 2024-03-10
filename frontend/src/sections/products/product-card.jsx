@@ -42,10 +42,6 @@ export default function ShopProductCard({ product }) {
     </Typography>
   );
 
-  function openURL(url) {
-    window.open(url, '_blank');
-  }
-
   return (
     <Card sx={{ cursor: 'pointer' }} onClick={() => navigate('/analyze')}>
       <Box sx={{ pt: '100%', position: 'relative' }}>

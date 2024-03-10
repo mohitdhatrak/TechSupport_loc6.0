@@ -1,38 +1,7 @@
+import { useEffect } from 'react';
 import './prodComp.css';
-// import { BarChart } from '@mui/x-charts/BarChart';
-const cardsData = [
-  {
-    id: 1,
-    type: 'free',
-    title: 'Free Plan',
-    description: 'Lorem ipsum',
-    price: 19.99,
-    recurrency: 14.99,
-    mostPopular: false,
-    data: ['2TB Storage', '100 E-mails'],
-  },
-  {
-    id: 2,
-    type: 'basic',
-    title: 'Basic Plan',
-    description: 'Lorem ipsum',
-    price: 29.99,
-    recurrency: 24.99,
-    mostPopular: false,
-    data: ['2TB Storage', '200 E-mails', '10 Accounts'],
-  },
-  {
-    id: 3,
-    type: 'medium',
-    title: 'Medium Plan',
-    description: 'Lorem ipsum',
-    price: 69.99,
-    recurrency: 59.99,
-    mostPopular: false,
-    data: ['10TB Storage', '500 E-mails', '20 Accounts'],
-  },
-];
-// const cardsData = [];
+import { useApp } from 'src/context/app-context';
+
 const cardsData1 = [
   {
     id: 1,
@@ -66,34 +35,34 @@ const cardsData1 = [
   },
 ];
 // ---------------------------------
-function CardDescription({ title, description }) {
+function CardDescription({ source, product_category }) {
   return (
     <div className="card-description">
-      <h2>{title}</h2>
-      <p>{description}</p>
+      <h2>{source}</h2>
+      <p>{product_category}</p>
     </div>
   );
 }
 
-function CardBilling({ price, recurrency }) {
+function CardBilling({ price }) {
   return (
     <div className="card-billing">
       <p>
-        <strong className="price">$ {price}</strong>
-        <strong> / mo.</strong>
+        <strong className="price">₹ {price}</strong>
+        {/* <strong> / mo.</strong> */}
       </p>
-      <p>
+      {/* <p>
         <span className="recurrency">Billed Anually or $ {recurrency}/monthly</span>
-      </p>
+      </p> */}
     </div>
   );
 }
 
-function CardFeatures({ data }) {
+function CardFeatures({ description }) {
   return (
     <div className="card-features">
       <ul>
-        {data.map((item, index) => (
+        {description.map((item, index) => (
           <li key={index}>{item}</li>
         ))}
       </ul>
@@ -101,29 +70,54 @@ function CardFeatures({ data }) {
   );
 }
 
-function CardAction({ clickMe }) {
+function openURL(url) {
+  window.open(url, '_blank');
+}
+
+function CardAction({ url }) {
   return (
     <div className="card-action">
-      <button onClick={clickMe}>BUY NOW</button>
+      <button onClick={(url) => openURL(url)}>CHECK</button>
     </div>
   );
 }
 
 function PricingCard(props) {
-  const { type, title, description, price, recurrency, mostPopular, data, clickMe } = props.data;
+  const {
+    source,
+    reviews_count,
+    title,
+    description,
+    price,
+    image_url,
+    product_category,
+    data,
+    url,
+  } = props.data;
 
   return (
-    <div className={`card pricing-card ${type}`}>
-      {mostPopular ? <span className="most-popular">Most Popular</span> : null}
-      <CardDescription title={title} description={description} />
-      <CardBilling price={price} recurrency={recurrency} />
-      <CardFeatures data={data} />
-      <CardAction clickMe={clickMe} />
+    <div className={`card pricing-card ${source}`}>
+      <CardDescription source={source} product_category={product_category} />
+      <CardBilling price={price} />
+      <CardFeatures description={description} />
+      <CardAction url={url} />
     </div>
   );
 }
 
 export default function ProdComp() {
+  const { data } = useApp();
+  const cardsData = [];
+  if (data?.flipkart?.length > 0) {
+    cardsData.push(data?.flipkart[0]);
+  }
+  if (data?.ebay?.length > 0) {
+    cardsData.push(data?.ebay[0]);
+  }
+  if (data?.indiamart?.length > 0) {
+    cardsData.push(data?.indiamart[0]);
+  }
+
   function handleClick() {
     console.log('Button clicked!');
   }
@@ -132,8 +126,8 @@ export default function ProdComp() {
     <>
       {cardsData.length > 0 ? (
         <div className="prod-wrapper">
-          {cardsData?.map((props) => {
-            return <PricingCard data={props} key={props.id} clickMe={handleClick} />;
+          {cardsData?.map((props, index) => {
+            return <PricingCard data={props} key={index} clickMe={handleClick} />;
           })}
         </div>
       ) : (

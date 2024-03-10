@@ -10,41 +10,35 @@ import AppConversionRates from '../app-conversion-rates';
 
 export default function BlogView() {
   const { data } = useApp();
+  console.log(data);
 
   return (
     <Container>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0}>
         <Typography variant="h4">Comparison and Analysis</Typography>
       </Stack>
 
       <ProdComp />
 
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', marginBottom: '3rem' }}>
         <AppCurrentVisits
           title="Reviews count"
           chart={{
             series: [
-              { label: 'Flipkart', value: Number(data?.flipkartReview) },
-              { label: 'eBay', value: Number(data?.ebayReview) },
-              { label: 'IndiaMart', value: Number(data?.indiamartReview) },
+              { label: 'Flipkart', value: data?.flipkartReview },
+              { label: 'eBay', value: data?.ebayReview },
+              { label: 'IndiaMart', value: data?.indiamartReview },
             ],
           }}
         />
 
         <AppConversionRates
-          title="Ratings"
+          title="Price comparison"
           chart={{
             series: [
-              { label: 'Italy', value: 400 },
-              { label: 'Japan', value: 430 },
-              { label: 'China', value: 448 },
-              { label: 'Canada', value: 470 },
-              { label: 'France', value: 540 },
-              { label: 'Germany', value: 580 },
-              { label: 'South Korea', value: 690 },
-              { label: 'Netherlands', value: 1100 },
-              { label: 'United States', value: 1200 },
-              { label: 'United Kingdom', value: 1380 },
+              { label: 'Flipkart', value: data?.flipkartPrice },
+              { label: 'eBay', value: data?.ebayPrice },
+              { label: 'IndiaMart', value: data?.indiamartPrice },
             ],
           }}
         />
