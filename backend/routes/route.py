@@ -426,7 +426,8 @@ def indiamart_scraper(url):
     price = price_element.text.strip().split('/')[0] if price_element else "Price not available"
 
     div_tag = soup.find('div', class_='dtlsec1')
-    table_data = {}
+    table_values = []
+
     if div_tag:
         table = div_tag.find('table')
         if table:
@@ -434,9 +435,8 @@ def indiamart_scraper(url):
             for row in rows:
                 cells = row.find_all('td')
                 if len(cells) == 2:
-                    key = cells[0].text.strip()
                     value = cells[1].text.strip()
-                    table_data[key] = value
+                    table_values.append(value)
 
     img_tag = soup.find('img', class_='img-drift-demo-trigger')
     image_src = img_tag['src'] if img_tag else ""
@@ -476,7 +476,7 @@ def indiamart_scraper(url):
         'title': title,
         'price': price,
         'reviews_count': reviews_count,
-        'description': table_data,
+        'description': table_values,
         'image_src': image_src,
         'user_reviews': user_reviews,
         'product_category': desired_content,
