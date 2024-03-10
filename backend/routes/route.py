@@ -8,6 +8,9 @@ from config.database import collection_name, user_collection
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from models.todos import Todo
 from models.user import UpdateUser, User
+from schema.schemas import list_serial
+# from transformers import pipeline
+import nltk  # Add this import statement
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from schema.schemas import list_serial
 
@@ -29,60 +32,23 @@ from serpapi import GoogleSearch
 # from ..scrapers.serapi_scraping import ebay_scraper,flipkart_scraper,indiamart_scraper,extract_search_results
 
 generic_reviews = [
-    {'name': 'John Doe', 'stars': 4, 'review': 'Great product, highly recommended! It exceeded my expectations and works flawlessly. The build quality is exceptional, and the features are exactly what I needed. I would definitely buy it again.'},
-    {'name': 'Alice Smith', 'stars': 5, 'review': 'This product is amazing! I have been using it for a while now, and it has never let me down. The performance is outstanding, and the design is sleek and modern. I would give it 10 stars if I could!'},
-    {'name': 'Bob Johnson', 'stars': 3, 'review': 'I purchased this product with high hopes, but it fell a bit short of my expectations. While it gets the job done, it lacks some of the advanced features that similar products offer. Overall, it\'s decent for the price.'},
-    {'name': 'Emily Brown', 'stars': 4, 'review': 'I am pleasantly surprised by the quality of this product. It is well-built and durable, and it performs admirably. The price is reasonable, and I would definitely recommend it to others.'},
-    {'name': 'Michael Davis', 'stars': 2, 'review': 'Unfortunately, I had a few issues with this product. While it initially worked fine, it started experiencing problems after a few weeks of use. The customer service was helpful, but I expected better reliability from this brand.'},
-    {'name': 'Emma Wilson', 'stars': 5, 'review': 'I absolutely love this product! It has exceeded all my expectations and made my life so much easier. The design is sleek, the performance is top-notch, and the price is unbeatable. I would give it 10 stars if I could!'},
-    {'name': 'James Martinez', 'stars': 3, 'review': 'This product is decent for the price, but it has some limitations. It gets the job done, but it lacks the advanced features that I was hoping for. Overall, it\'s a good value for the money.'},
-    {'name': 'Olivia Anderson', 'stars': 4, 'review': 'I am very satisfied with this product. It performs exactly as described, and the build quality is excellent. The price is reasonable, and I would definitely purchase it again in the future.'},
-    {'name': 'William Taylor', 'stars': 5, 'review': 'I cannot say enough good things about this product. It is truly outstanding in every way. The performance is exceptional, the design is sleek and modern, and the price is unbeatable. I would recommend it to everyone.'},
-    {'name': 'Sophia Thomas', 'stars': 4, 'review': 'I am quite happy with this product. It meets all my needs and performs admirably. The price is reasonable, and the build quality is good. Overall, it\'s a solid purchase.'},
-    {'name': 'Daniel Hernandez', 'stars': 3, 'review': 'I had high hopes for this product, but it fell short of my expectations. While it works fine, it lacks some of the features that similar products offer. It\'s not bad, but there are better options available.'},
-    {'name': 'Isabella Moore', 'stars': 4, 'review': 'I am pleased with this product. It offers good value for the money and performs well. The build quality is decent, and it has all the features I need. Overall, it\'s a solid choice.'},
-    {'name': 'Matthew Wilson', 'stars': 5, 'review': 'I absolutely love this product! It has exceeded all my expectations and made my life so much easier. The performance is outstanding, the design is sleek, and the price is unbeatable. I would recommend it to everyone.'},
-    {'name': 'Mia Lopez', 'stars': 4, 'review': 'This product has pleasantly surprised me. It performs admirably and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely recommend it to others.'},
-    {'name': 'Ethan Garcia', 'stars': 3, 'review': 'I am fairly satisfied with this product. It works fine, but it lacks some of the advanced features that I was hoping for. Overall, it\'s decent for the price, but there are better options available.'},
-    {'name': 'Ava Martinez', 'stars': 4, 'review': 'I am quite happy with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely recommend it to others.'},
-    {'name': 'Alexander Clark', 'stars': 5, 'review': 'This product is outstanding! It has exceeded all my expectations and made my life so much easier. The performance is exceptional, the design is sleek and modern, and the price is unbeatable. I would recommend it to everyone.'},
-    {'name': 'Charlotte Lewis', 'stars': 4, 'review': 'I am very impressed with this product. It performs admirably and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely purchase it again.'},
-    {'name': 'Noah Robinson', 'stars': 3, 'review': 'This product is decent for the price, but it lacks some of the features that I was hoping for. It gets the job done, but it\'s not exceptional. Overall, it\'s a solid choice if you\'re on a budget.'},
-    {'name': 'Amelia Hill', 'stars': 4, 'review': 'I am satisfied with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely recommend it to others.'},
-    {'name': 'Benjamin Walker', 'stars': 5, 'review': 'This product is absolutely fantastic! It has exceeded all my expectations and made my life so much easier. The performance is outstanding, the design is sleek, and the price is unbeatable. I would give it 10 stars if I could!'},
-    {'name': 'Grace Green', 'stars': 4, 'review': 'I am very pleased with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely purchase it again.'},
-    {'name': 'Jacob King', 'stars': 3, 'review': 'This product is average at best. It works fine, but it lacks some of the features that similar products offer. Overall, it\'s not bad, but it\'s nothing exceptional.'},
-    {'name': 'Chloe Scott', 'stars': 4, 'review': 'I am happy with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely recommend it to others.'},
-    {'name': 'Liam Baker', 'stars': 5, 'review': 'This product is perfect in every way. It has exceeded all my expectations and made my life so much easier. The performance is exceptional, the design is sleek, and the price is unbeatable. I would recommend it to everyone.'},
-    {'name': 'Zoe Adams', 'stars': 4, 'review': 'I am satisfied with this product. It works well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely purchase it again.'},
-    {'name': 'William Hall', 'stars': 3, 'review': 'This product is decent for the price, but it has some limitations. It works fine, but it lacks some of the advanced features that I was hoping for. Overall, it\'s a good value for the money.'},
-    {'name': 'Natalie Ward', 'stars': 4, 'review': 'I am impressed with the build quality of this product. It is sturdy and reliable, and it performs well. The design is sleek, and the price is reasonable. I would definitely recommend it to others.'},
-    {'name': 'Henry Roberts', 'stars': 5, 'review': 'I cannot say enough good things about this product. It is truly outstanding in every way. The performance is exceptional, the design is sleek and modern, and the price is unbeatable. I would recommend it to everyone.'},
-    {'name': 'Lily Morris', 'stars': 4, 'review': 'I am very satisfied with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely purchase it again.'},
-    {'name': 'Owen Turner', 'stars': 3, 'review': 'This product is satisfactory, but it could be better. It works fine, but it lacks some of the features that I was hoping for. Overall, it\'s decent for the price, but there are better options available.'},
-    {'name': 'Ella Wright', 'stars': 4, 'review': 'I am pleased with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely recommend it to others.'},
-    {'name': 'Ryan Phillips', 'stars': 5, 'review': 'This product is exceptional! It has exceeded all my expectations and made my life so much easier. The performance is outstanding, the design is sleek, and the price is unbeatable. I would recommend it to everyone.'},
-    {'name': 'Avery Murphy', 'stars': 4, 'review': 'I am very satisfied with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely purchase it again.'},
-    {'name': 'Carter Cook', 'stars': 3, 'review': 'This product is average at best. It works fine, but it lacks some of the features that I was hoping for. Overall, it\'s not bad, but it\'s nothing exceptional.'},
-    {'name': 'Scarlett Rivera', 'stars': 4, 'review': 'I am happy with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely recommend it to others.'},
-    {'name': 'Matthew Wood', 'stars': 5, 'review': 'I absolutely love this product! It has exceeded all my expectations and made my life so much easier. The performance is outstanding, the design is sleek, and the price is unbeatable. I would recommend it to everyone.'},
-    {'name': 'Hannah Russell', 'stars': 4, 'review': 'I am impressed with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely purchase it again.'},
-    {'name': 'Gabriel Bell', 'stars': 3, 'review': 'This product is decent for the price, but it has some limitations. It works fine, but it lacks some of the features that I was hoping for. Overall, it\'s a good value for the money.'},
-    {'name': 'Addison Ward', 'stars': 4, 'review': 'I am pleased with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely recommend it to others.'},
-    {'name': 'Dylan Foster', 'stars': 5, 'review': 'This product is outstanding! It has exceeded all my expectations and made my life so much easier. The performance is exceptional, the design is sleek, and the price is unbeatable. I would recommend it to everyone.'},
-    {'name': 'Aubrey Brooks', 'stars': 4, 'review': 'I am very satisfied with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely purchase it again.'},
-    {'name': 'Levi Kelly', 'stars': 3, 'review': 'This product is average at best. It works fine, but it lacks some of the features that I was hoping for. Overall, it\'s not bad, but it\'s nothing exceptional.'},
-    {'name': 'Zoey Cox', 'stars': 4, 'review': 'I am happy with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely recommend it to others.'},
-    {'name': 'Logan Price', 'stars': 5, 'review': 'This product is perfect in every way. It has exceeded all my expectations and made my life so much easier. The performance is exceptional, the design is sleek, and the price is unbeatable. I would recommend it to everyone.'},
-    {'name': 'Savannah Long', 'stars': 4, 'review': 'I am satisfied with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely purchase it again.'},
-    {'name': 'Nathan Murphy', 'stars': 3, 'review': 'This product is satisfactory, but it could be better. It works fine, but it lacks some of the features that I was hoping for. Overall, it\'s decent for the price, but there are better options available.'},
-    {'name': 'Brooklyn Butler', 'stars': 4, 'review': 'I am happy with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely recommend it to others.'},
-    {'name': 'Isaac Coleman', 'stars': 5, 'review': 'This product is outstanding! It has exceeded all my expectations and made my life so much easier. The performance is exceptional, the design is sleek, and the price is unbeatable. I would recommend it to everyone.'},
-    {'name': 'Aaliyah Barnes', 'stars': 4, 'review': 'I am very satisfied with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely purchase it again.'},
-    {'name': 'Lucas Gonzalez', 'stars': 3, 'review': 'This product is average at best. It works fine, but it lacks some of the features that I was hoping for. Overall, it\'s not bad, but it\'s nothing exceptional.'},
-    {'name': 'Madelyn Richardson', 'stars': 4, 'review': 'I am pleased with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely recommend it to others.'},
-    {'name': 'Caleb Hill', 'stars': 3, 'review': 'This product is average at best. It works fine, but it lacks some of the features that I was hoping for. Overall, it\'s not bad, but it\'s nothing exceptional.'}
+    {'name': 'Aarav Kumar', 'stars': 4, 'review': 'Great product, highly recommended! It exceeded my expectations and works flawlessly. The build quality is exceptional, and the features are exactly what I needed. I would definitely buy it again.'},
+    {'name': 'Aarya Gupta', 'stars': 5, 'review': 'This product is amazing! I have been using it for a while now, and it has never let me down. The performance is outstanding, and the design is sleek and modern. I would give it 10 stars if I could!'},
+    {'name': 'Aarush Singh', 'stars': 3, 'review': 'I purchased this product with high hopes, but it fell a bit short of my expectations. While it gets the job done, it lacks some of the advanced features that similar products offer. Overall, it\'s decent for the price.'},
+    {'name': 'Aditi Sharma', 'stars': 4, 'review': 'I am pleasantly surprised by the quality of this product. It is well-built and durable, and it performs admirably. The price is reasonable, and I would definitely recommend it to others.'},
+    {'name': 'Aditya Patel', 'stars': 2, 'review': 'Unfortunately, I had a few issues with this product. While it initially worked fine, it started experiencing problems after a few weeks of use. The customer service was helpful, but I expected better reliability from this brand.'},
+    {'name': 'Advait Malhotra', 'stars': 5, 'review': 'I absolutely love this product! It has exceeded all my expectations and made my life so much easier. The design is sleek, the performance is top-notch, and the price is unbeatable. I would recommend it to everyone.'},
+    {'name': 'Advika Reddy', 'stars': 4, 'review': 'This product is decent for the price, but it has some limitations. It works fine, but it lacks some of the features that similar products offer. Overall, it\'s a good value for the money.'},
+    {'name': 'Advik Shah', 'stars': 5, 'review': 'I cannot say enough good things about this product. It is truly outstanding in every way. The performance is exceptional, the design is sleek and modern, and the price is unbeatable. I would recommend it to everyone.'},
+    {'name': 'Ahana Nair', 'stars': 4, 'review': 'I am quite happy with this product. It meets all my needs and performs admirably. The price is reasonable, and the build quality is good. Overall, it\'s a solid purchase.'},
+    {'name': 'Aiden Choudhury', 'stars': 3, 'review': 'I had high hopes for this product, but it fell short of my expectations. While it works fine, it lacks some of the features that similar products offer. It\'s not bad, but there are better options available.'},
+    {'name': 'Aisha Verma', 'stars': 4, 'review': 'I am pleased with this product. It offers good value for the money and performs well. The build quality is decent, and it has all the features I need. Overall, it\'s a solid choice.'},
+    {'name': 'Akash Singh', 'stars': 5, 'review': 'I absolutely love this product! It has exceeded all my expectations and made my life so much easier. The performance is outstanding, the design is sleek, and the price is unbeatable. I would recommend it to everyone.'},
+    {'name': 'Akhil Patel', 'stars': 4, 'review': 'I am very impressed with this product. It performs admirably and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely purchase it again.'},
+    {'name': 'Akshara Nair', 'stars': 3, 'review': 'This product is decent for the price, but it lacks some of the features that I was hoping for. It gets the job done, but it\'s not exceptional. Overall, it\'s a solid choice if you\'re on a budget.'},
+    {'name': 'Akshay Sharma', 'stars': 4, 'review': 'I am satisfied with this product. It performs well and offers good value for the money. The design is sleek, and the build quality is excellent. I would definitely recommend it to others.'}
 ]
+
 
 flipkart_sales = {
     'Big Saving Days': {
@@ -244,8 +210,8 @@ def extract_search_results(query, platform):
 
     search = GoogleSearch(params)
     results = search.get_dict()
-    print(params)
-    print(results)
+    # print(params)
+    # print(results)
     # Extracting organic search results
     organic_results = results.get("organic_results", [])
 
@@ -362,12 +328,12 @@ def ebay_scraper(url):
         'description': description,
         'image_url': image_url,
         'user_reviews': user_reviews,
-        'product_category': product_category
+        'product_category': product_category,
+        'url': url  # Include the URL
     }
 
     return result
     
-
 def flipkart_scraper(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
@@ -411,14 +377,12 @@ def flipkart_scraper(url):
         'description': highlights_list,
         'image_url': image_src,
         'user_reviews': user_reviews,
-        'product_category': category
-        
+        'product_category': category,
+        'url': url  # Include the URL
     }
 
     return result
     
-
-
 # Function to scrape Indiamart data
 def indiamart_scraper(url):
     headers = {
@@ -493,47 +457,12 @@ def indiamart_scraper(url):
         'description': table_data,
         'image_src': image_src,
         'user_reviews': user_reviews,
-        'product_category': desired_content
-        
+        'product_category': desired_content,
+        'url': url  # Include the URL
     }
 
     return result
     
-    
-    
-    
-    
-
-
-
-# Main code execution
-queries = ["Iphone 15"]
-platforms = ["flipkart", "ebay", "indiamart"]
-
-# Dictionary to store scraped data for each platform
-scraped_data_dict = {"flipkart": [], "ebay": [], "indiamart": []}
-
-for product in queries:
-    for platform in platforms:
-        flipkart_links, ebay_links, indiamart_links = extract_search_results(product, platform)
-        if platform == "flipkart":
-            for link in flipkart_links:
-                product_data = flipkart_scraper(link)
-                scraped_data_dict["flipkart"].append(product_data)
-        elif platform == "ebay":
-            for link in ebay_links:
-                product_data = ebay_scraper(link)
-                scraped_data_dict["ebay"].append(product_data)
-        elif platform == "indiamart":
-            for link in indiamart_links:
-                product_data = indiamart_scraper(link)
-                scraped_data_dict["indiamart"].append(product_data)
-
-# Convert scraped data dictionary to JSON format
-json_data = json.dumps(scraped_data_dict)
-
-# Print the JSON data
-print(json_data)
 
 # Ensure the upload directory exists
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -554,18 +483,6 @@ def get_current_user(user: User = Depends(authenticate_user)):
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
     return user
-
-# # sentiment analysis HuggingFace Model
-# @router.post("/analyze_sentiment")
-# async def analyze_sentiment(text: str):
-    # Run inference
-    result = model(text)
-    
-    # Process output
-    sentiment = result[0]['label']
-    
-    # Return response
-    return {"sentiment": sentiment}
 
 @router.post("/average_sentiment")
 async def average_sentiment(product_data: Dict):
