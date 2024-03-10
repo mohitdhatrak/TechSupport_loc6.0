@@ -17,7 +17,7 @@ const navConfig = [
   // },
   {
     title: 'analyze',
-    path: '/blog',
+    path: '/analyze',
     icon: icon('ic_blog'),
   },
   {

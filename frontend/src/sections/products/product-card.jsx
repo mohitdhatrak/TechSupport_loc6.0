@@ -5,8 +5,11 @@ import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router-dom';
 
 export default function ShopProductCard({ product }) {
+  const navigate = useNavigate();
+
   const renderImg = (
     <Box
       component="img"
@@ -44,7 +47,7 @@ export default function ShopProductCard({ product }) {
   }
 
   return (
-    <Card sx={{ cursor: 'pointer' }} onClick={() => openURL(product?.url)}>
+    <Card sx={{ cursor: 'pointer' }} onClick={() => navigate('/analyze')}>
       <Box sx={{ pt: '100%', position: 'relative' }}>
         {/* {product.status && renderStatus} */}
 

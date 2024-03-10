@@ -14,38 +14,38 @@ import { useApp } from 'src/context/app-context';
 
 export default function ProductsView() {
   const [openFilter, setOpenFilter] = useState(false);
-  const { data, setData, dataBlog, setDataBlog } = useApp();
+  const { data, setData } = useApp();
   const handleOpenFilter = () => {
     setOpenFilter(true);
     console.log(data);
-    console.log(dataBlog);
+    // console.log(dataBlog);
   };
 
-  useEffect(() => {
-    return () => {
-      let temp = [];
-      if (data?.flipkart?.length >= 2) {
-        temp.push(data.flipkart[0]);
-        temp.push(data.flipkart[1]);
-      } else {
-        temp = [...temp, ...data.flipkart];
-      }
-      if (data?.ebay?.length >= 2) {
-        temp.push(data.ebay[0]);
-        temp.push(data.ebay[1]);
-      } else {
-        temp = [...temp, ...data.ebay];
-      }
-      if (data?.indiamart?.length >= 2) {
-        temp.push(data.indiamart[0]);
-        temp.push(data.indiamart[1]);
-      } else {
-        temp = [...temp, ...data.indiamart];
-      }
-      setDataBlog(temp);
-      console.log(temp);
-    };
-  }, [data]);
+  // useEffect(() => {
+  //   return () => {
+  //     let temp = [];
+  //     if (data?.flipkart?.length >= 2) {
+  //       temp.push(data.flipkart[0]);
+  //       temp.push(data.flipkart[1]);
+  //     } else {
+  //       temp = [...temp, ...data.flipkart];
+  //     }
+  //     if (data?.ebay?.length >= 2) {
+  //       temp.push(data.ebay[0]);
+  //       temp.push(data.ebay[1]);
+  //     } else {
+  //       temp = [...temp, ...data.ebay];
+  //     }
+  //     if (data?.indiamart?.length >= 2) {
+  //       temp.push(data.indiamart[0]);
+  //       temp.push(data.indiamart[1]);
+  //     } else {
+  //       temp = [...temp, ...data.indiamart];
+  //     }
+  //     // setDataBlog(temp);
+  //     console.log(temp)
+  //   }
+  // }, []);
 
   const handleCloseFilter = () => {
     setOpenFilter(false);
@@ -81,7 +81,7 @@ export default function ProductsView() {
             <ProductCard product={product} />
           </Grid>
         ))} */}
-        {dataBlog.map((product, index) => (
+        {data.map((product, index) => (
           <Grid key={index} xs={12} sm={6} md={3}>
             <ProductCard product={product} />
           </Grid>
