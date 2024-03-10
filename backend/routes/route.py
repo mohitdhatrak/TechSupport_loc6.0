@@ -328,7 +328,8 @@ def ebay_scraper(url):
         'description': description,
         'image_url': image_url,
         'user_reviews': user_reviews,
-        'product_category': product_category
+        'product_category': product_category,
+        'url': url  # Include the URL
     }
 
     return result
@@ -376,8 +377,8 @@ def flipkart_scraper(url):
         'description': highlights_list,
         'image_url': image_src,
         'user_reviews': user_reviews,
-        'product_category': category
-        
+        'product_category': category,
+        'url': url  # Include the URL
     }
 
     return result
@@ -456,12 +457,11 @@ def indiamart_scraper(url):
         'description': table_data,
         'image_src': image_src,
         'user_reviews': user_reviews,
-        'product_category': desired_content
-        
+        'product_category': desired_content,
+        'url': url  # Include the URL
     }
 
     return result
-    
     
 
 # Ensure the upload directory exists
