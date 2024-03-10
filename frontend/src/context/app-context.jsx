@@ -7,15 +7,15 @@ const AppContext = createContext(defaultProviderValues);
 export const AppProvider = ({ children }) => {
   //   const [currentUser, setCurrentUser] = useState("");
   const [data, setData] = useState({ flipkart: [], ebay: [], indiamart: [] });
-  const [dataBlog, setDataBlog] = useState([]);
+  const [dataArr, setDataArr] = useState([]);
 
   return (
     <AppContext.Provider
       value={{
         data,
         setData,
-        dataBlog,
-        setDataBlog,
+        dataArr,
+        setDataArr,
       }}
     >
       {children}
