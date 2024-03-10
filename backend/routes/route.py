@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from models.todos import Todo
 from models.user import UpdateUser, User
 from schema.schemas import list_serial
-from transformers import pipeline
+# from transformers import pipeline
 import nltk  # Add this import statement
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 nltk.download('vader_lexicon')  # Move this line here

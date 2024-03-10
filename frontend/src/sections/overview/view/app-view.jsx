@@ -52,13 +52,39 @@ export default function AppView() {
   return (
     <>
       {!searchLoad ? (
-        <Container maxWidth="xl" className="app-container">
-          <Typography variant="h4" sx={{ mb: 5, textAlign: 'center' }}>
+        <Container maxWidth="4xl" className="app-container">
+          {/* <Typography variant="h4" sx={{ mb: 5, textAlign: 'center' }}>
             eCompare
-          </Typography>
-          <Typography variant="body1" className="desc1">
+          </Typography> */}
+          <h1 style={{ fontSize: '4rem', fontWeight: 'bold', color: '#333', textAlign: 'center' }}>
+            Ecompare
+          </h1>
+          <Typography
+            variant="body1"
+            className="desc1 text"
+            style={{
+              fontSize: '1.6rem',
+              whiteSpace: 'nowrap',
+              textAlign: 'center',
+              justifyContent: 'center',
+            }}
+          >
             A platform for comparing prices of various products across different online stores.
-            Search below to find the best deals, recommendations and analysis!
+          </Typography>
+          <Typography
+            variant="h3"
+            className="desc1 text"
+            style={{
+              fontSize: '1.8rem',
+              textAlign: 'center',
+              justifyContent: 'center',
+              fontWeight: 'bold',
+              backgroundImage: 'linear-gradient(to right, #0072ff, #00c6ff)',
+              WebkitBackgroundClip: 'text',
+              color: 'transparent',
+            }}
+          >
+            Best Deals-Recommendations-Analysis
           </Typography>
           <Typography variant="body1" className="desc2">
             Try searching <span className="animated" />
@@ -77,6 +103,17 @@ export default function AppView() {
         </Container>
       ) : (
         <Container>
+          <div className="search-container">
+            <SearchBar
+              label="Search products..."
+              variant="outlined"
+              value={searchValue}
+              onChange={handleSearchChange}
+            />
+            <button type="submit" className="search-button" onClick={getScrapedData}>
+              Compare
+            </button>
+          </div>
           <Typography variant="h4" sx={{ mb: 5 }}>
             Search Results
           </Typography>
