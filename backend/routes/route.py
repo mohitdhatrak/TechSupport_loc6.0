@@ -247,8 +247,8 @@ def extract_search_results(query, platform):
 
     search = GoogleSearch(params)
     results = search.get_dict()
-    print(params)
-    print(results)
+    # print(params)
+    # print(results)
     # Extracting organic search results
     organic_results = results.get("organic_results", [])
 
@@ -370,7 +370,6 @@ def ebay_scraper(url):
 
     return result
     
-
 def flipkart_scraper(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
@@ -420,8 +419,6 @@ def flipkart_scraper(url):
 
     return result
     
-
-
 # Function to scrape Indiamart data
 def indiamart_scraper(url):
     headers = {
@@ -503,40 +500,6 @@ def indiamart_scraper(url):
     return result
     
     
-    
-    
-    
-
-
-
-# Main code execution
-queries = ["Iphone 15"]
-platforms = ["flipkart", "ebay", "indiamart"]
-
-# Dictionary to store scraped data for each platform
-scraped_data_dict = {"flipkart": [], "ebay": [], "indiamart": []}
-
-for product in queries:
-    for platform in platforms:
-        flipkart_links, ebay_links, indiamart_links = extract_search_results(product, platform)
-        if platform == "flipkart":
-            for link in flipkart_links:
-                product_data = flipkart_scraper(link)
-                scraped_data_dict["flipkart"].append(product_data)
-        elif platform == "ebay":
-            for link in ebay_links:
-                product_data = ebay_scraper(link)
-                scraped_data_dict["ebay"].append(product_data)
-        elif platform == "indiamart":
-            for link in indiamart_links:
-                product_data = indiamart_scraper(link)
-                scraped_data_dict["indiamart"].append(product_data)
-
-# Convert scraped data dictionary to JSON format
-json_data = json.dumps(scraped_data_dict)
-
-# Print the JSON data
-print(json_data)
 
 # Ensure the upload directory exists
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -557,18 +520,6 @@ def get_current_user(user: User = Depends(authenticate_user)):
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password")
     return user
-
-# # sentiment analysis HuggingFace Model
-# @router.post("/analyze_sentiment")
-# async def analyze_sentiment(text: str):
-    # Run inference
-    result = model(text)
-    
-    # Process output
-    sentiment = result[0]['label']
-    
-    # Return response
-    return {"sentiment": sentiment}
 
 @router.post("/average_sentiment")
 async def average_sentiment(product_data: Dict):
